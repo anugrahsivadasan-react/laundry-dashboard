@@ -66,7 +66,7 @@ const OrderToolbar: React.FC<Props> = ({ onSearch, onStatusChange }) => {
       </div>
 
       {/* Status Tabs */}
-      <div className="bg-[#F3F4F6] rounded-lg p-1 flex overflow-x-auto">
+      <div className="bg-[#F3F4F6] rounded-lg p-1 flex justify-between overflow-x-auto">
         {statuses.map((s) => (
           <button
             key={s}

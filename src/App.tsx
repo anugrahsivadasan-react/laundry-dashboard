@@ -3,6 +3,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import Home from "./pages/Home";
 import OrderManagement from "./pages/Orders/OrderManagement";
 import PicupAndDelivery from "./pages/picup&delivery/PicupAndDelivery";
+import Customer from "./pages/Customer/customer";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="dashboard" element={<Home />} />
           <Route path="orders" element={<OrderManagement/>} />
           <Route path="pickup" element={<PicupAndDelivery/>} />
+          <Route path="customers" element={<Customer/>} />
 
         </Route>
 
