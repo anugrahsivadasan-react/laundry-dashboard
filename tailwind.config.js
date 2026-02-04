@@ -7,6 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
+                arimo: ["Arimo", "sans-serif"],
+
         poppins: ["Poppins", "sans-serif"],
       },
     },
