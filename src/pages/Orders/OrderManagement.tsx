@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import OrderToolbar from "../../components/OrderManagement/OrderToolbar";
+import editicon from '../../assets/icons/editicon.svg';
 
 /* ---------------- TYPES ---------------- */
 export interface Order {
@@ -253,7 +254,7 @@ const OrderManagement: React.FC = () => {
                 <td className="px-4 py-3">
                   <div className="flex gap-2">
                     <button>👁</button>
-                    <button>✏️</button>
+                    <button><img src={editicon} alt="" /></button>
                   </div>
                 </td>
               </tr>
