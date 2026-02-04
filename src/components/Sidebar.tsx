@@ -23,7 +23,7 @@ type MenuItem = {
 const menuItems: MenuItem[] = [
   { label: "Dashboard", icon: dashboard, path: "/" },
   { label: "Orders", icon: orders, path: "/orders" },
-  { label: "Pickup & Delivery", icon: picup, path: "/pickup-delivery" },
+  { label: "Pickup & Delivery", icon: picup, path: "/pickup" },
   { label: "Customers", icon: customers, path: "/customers" },
   { label: "Services & Pricing", icon: services, path: "/services-pricing" },
   { label: "Payments", icon: payments, path: "/payments" },

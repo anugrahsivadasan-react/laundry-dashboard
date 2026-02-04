@@ -27,7 +27,7 @@ const Dashboard = () => {
   if (error) return <ErrorState message={error} />;
 
   return (
-    <div className="pl-6 pr-6 bg-[#EEF2F7]">
+    <div className="p-6 pr-6 bg-[#EEF2F7]">
      <Header />
 
       <div className="grid grid-cols-4 gap-5 mb-5 pt-[30px]" >
