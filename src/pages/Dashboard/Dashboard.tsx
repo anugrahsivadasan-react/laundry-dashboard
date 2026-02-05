@@ -1,5 +1,5 @@
 import { useDashboardViewModel } from "./DashboardViewModel";
-import Loader from "../../components/Loader/index";
+// import Loader from "../../components/Loader/index";
 import ErrorState from "../../components/ErrorState/index";
 import Header from "../../components/dashboard components/Header";
 import StatsCard from "../../components/dashboard components/StatsCard";
@@ -23,7 +23,7 @@ const Dashboard = () => {
   const { data, loading, error } = useDashboardViewModel();
   
 
-  if (loading) return <Loader />;
+  // if (loading) return <Loader />;
   if (error) return <ErrorState message={error} />;
 
   return (

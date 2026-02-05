@@ -1,4 +1,3 @@
-import { Loader } from 'lucide-react';
 import PicupCard from '../../components/pickup&delivery/PicupCards'
 import PickupHeader from '../../components/pickup&delivery/PicupHeader'
 import { useDashboardViewModel } from '../Dashboard/DashboardViewModel';
@@ -18,12 +17,11 @@ import PickupCard from '../../components/pickup&delivery/PickupCard';
 
 
 const PicupAndDelivery = () => {
-     const { data, loading, error } = useDashboardViewModel();
+     const { data, error } = useDashboardViewModel();
        const [activeTab, setActiveTab] = useState<"pickup" | "delivery">("pickup");
 
   
 
-  if (loading) return <Loader />;
   if (error) return <ErrorState message={error} />;
 
   const pickupList = [

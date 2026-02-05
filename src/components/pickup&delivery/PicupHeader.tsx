@@ -1,8 +1,54 @@
 import { useState } from "react";
-// import CreateOrderModal from "./CreateOrderModal";
+import AssignDriverModal from "./AssignDriverModal";
+const drivers = [
+  {
+    id: "1",
+    name: "Mike Driver",
+    status: "Available",
+    rating: 4.8,
+    phone: "+1 234 567 8910",
+    vehicle: "Bike - KA01AB1234",
+    distance: "2.5 km",
+    orders: 3,
+    avatar: "/avatars/mike.png",
+  },
+  {
+    id: "2",
+    name: "John Driver",
+    status: "On Duty",
+    rating: 4.9,
+    phone: "+1 234 567 8911",
+    vehicle: "Van - KA01CD5678",
+    distance: "5.2 km",
+    orders: 8,
+    avatar: "/avatars/john.png",
+  },
+  {
+    id: "3",
+    name: "John Driver",
+    status: "On Duty",
+    rating: 4.9,
+    phone: "+1 234 567 8911",
+    vehicle: "Van - KA01CD5678",
+    distance: "5.2 km",
+    orders: 8,
+    avatar: "/avatars/john.png",
+  },
+  {
+    id: "4",
+    name: "John Driver",
+    status: "On Duty",
+    rating: 4.9,
+    phone: "+1 234 567 8911",
+    vehicle: "Van - KA01CD5678",
+    distance: "5.2 km",
+    orders: 8,
+    avatar: "/avatars/john.png",
+  },
+];
 
 const PickupHeader = () => {
-        //   const [open, setOpen] = useState(false);
+          const [open, setOpen] = useState(false);
 
   return (
     <div className="flex items-center justify-between">
@@ -22,16 +68,19 @@ Manage pickup and delivery schedules        </p>
       </button>
       <div className="pl-2">
       <button        
-    //    onClick={() => setOpen(true)}
+       onClick={() => setOpen(true)}
  className="h-9 rounded-[10px] text-[14px] leading-[20px] font-normal  px-4 border bg-gradient-to-r from-[#2B7FFF] to-[#9810FA] text-white">
        Assign Driver
       </button>
       </div>
       </div>
-       {/* <CreateOrderModal
-        isOpen={open}
+      <AssignDriverModal
+        open={open}
         onClose={() => setOpen(false)}
-      /> */}
+        onAssign={(id) => console.log("Assign driver:", id)}
+        orderId="ORD-001"
+        drivers={drivers}
+      />
 
     </div>
   );

@@ -166,7 +166,7 @@ const OrderManagement: React.FC = () => {
         Export
       </button>
 
-      <button className="h-10 px-4 rounded-lg bg-blue-600 text-white text-sm hover:bg-blue-700">
+      <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-[#2B7FFF] to-[#9810FA] text-white text-sm hover:bg-blue-700">
         + New Order
       </button>
     </div>
