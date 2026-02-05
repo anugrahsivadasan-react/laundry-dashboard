@@ -1,5 +1,5 @@
 import React from "react";
-import { X, Plus } from "lucide-react";
+import {  Plus } from "lucide-react";
 
 interface CreateOrderModalProps {
   isOpen: boolean;
