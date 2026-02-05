@@ -17,7 +17,8 @@ const Payments : React.FC = ()=> {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-[24px] font-semibold text-[#101828]">
-Payments & Billing          </h1>
+        Payments & Billing         
+ </h1>
           <p className="text-[14px] font-arimo text-[#6A7282]">
             Track and manage all payment transactions
           </p>
@@ -25,7 +26,7 @@ Payments & Billing          </h1>
          <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"
          >
 
-          Record Payment 
+          Record Payment  
         </button>
         </div>
 
