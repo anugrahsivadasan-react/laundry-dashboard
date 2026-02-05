@@ -3,6 +3,7 @@ import CustomerStatsCard from "../../components/Customers/CustomerStatsCard";
 import { Users, Star, Mail, Award } from "lucide-react";
 import CustomerSearchBar from "../../components/Customers/CustomerSearchBar";
 import CustomerCard from "../../components/Customers/CustomerCard";
+import AddCustomerModal from "../../components/Customers/AddCustomerModal";
 
 
 
@@ -11,11 +12,13 @@ import CustomerCard from "../../components/Customers/CustomerCard";
 const Customer: React.FC = () => {
 
 const [search, setSearch] = useState("");
+const [openModal, setOpenModal] = useState(false);
+
 
 
 const customers = [
   {
-    id: 1,
+    id: 1, 
     name: "John Doe",
     avatar: "https://i.pravatar.cc/150?img=1",
     status: "Active",
@@ -75,15 +78,17 @@ const customers = [
       {/* HEADER */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-xl font-semibold text-gray-900">
+          <h1 className="text-[24px] font-semibold text-[#101828]">
             Customer Management
           </h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-[14px] font-arimo text-[#6A7282]">
             View and manage customer information
           </p>
         </div>
 
-        <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90">
+        <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"
+         onClick={() => setOpenModal(true)}>
+
           Add Customer
         </button>
       </div>
@@ -134,6 +139,8 @@ const customers = [
   ))}
 </div>
 
+ 
+<AddCustomerModal open={openModal} onClose={() => setOpenModal(false)} />
 
 
     </div>
