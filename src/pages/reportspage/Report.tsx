@@ -4,9 +4,14 @@ import RevenueIcon from '../../assets/icons/revenueicon.svg'
 import UsersIcon from '../../assets/icons/usersicon.svg'
 import OrdersIcon from '../../assets/icons/OrdersIcon.svg'
 import AvgIcon from '../../assets/icons/AvgIcon.svg'
+import RevenueTrendsCard from '../../components/reportspage/RevenueTrendsCard'
+import TopCustomersCard from '../../components/reportspage/TopCustomersCard'
+import ServicePerformanceCard from '../../components/reportspage/ServicePerformanceChart'
+import ServiceRevenueCard from '../../components/reportspage/ServiceRevenueChart'
+import ServiceStatisticsTable from '../../components/reportspage/ServiceStatisticsTable'
 
 
-const Report = () => {
+const Report:React.FC= () => {
   return (
      <div className="p-6 bg-[#F3F6F9] min-h-screen">
       {/* HEADER */}
@@ -19,11 +24,22 @@ Reports & Analytics
             Comprehensive business insights and analytics  
           </p>
         </div>
+
+        <div className='flex gap-2'>
+
+          <button className='h-10 px-4 rounded-lg bg-white text-sm border border-[#0000001A]'>
+            Custom range
+
+          </button>
+
          <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"
          >
 
-          Record Payment 
+          Download report
         </button>
+
+
+        </div>
         </div>
 
 <div className="flex gap-4 ">
@@ -60,6 +76,22 @@ Reports & Analytics
         borderColor="border-l-orange-500"
       />
 
+</div>
+
+<section className='flex gap-4 mt-8'>
+  <RevenueTrendsCard/>
+  <TopCustomersCard/>
+
+</section>
+
+
+<section className='flex gap-4 mt-8'>
+  <ServicePerformanceCard/>
+  <ServiceRevenueCard/>
+</section>
+
+<div className='mt-8'>
+  <ServiceStatisticsTable/>
 </div>
 
         </div>

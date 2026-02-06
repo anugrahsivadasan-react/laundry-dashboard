@@ -8,6 +8,12 @@ import Payments from "./pages/Payments/Payments";
 import OffersAndCoupons from "./pages/Offers&Coupons/OffersAndCoupons";
 import ServicesAndPricing from "./pages/ServicesAndPricing/ServicesAndPricing";
 import Report from "./pages/reportspage/Report";
+import AdminAndStaff from "./pages/Admin&Staff/AdminAndStaff";
+import AccountSection from "./pages/AccountSection/AccountSection";
+
+
+
+
 
 function App() {
   return (
@@ -29,6 +35,8 @@ function App() {
           <Route path="offers" element={<OffersAndCoupons/>} />
           <Route path="services-pricing" element={<ServicesAndPricing/>} />
           <Route path="reports" element={<Report/>} />
+          <Route path="admin-staff" element={<AdminAndStaff/>} />
+          <Route path="account-session" element={<AccountSection/>} />
 
         </Route>
 
