@@ -99,6 +99,7 @@ const Premium = () => {
               <div className="flex items-center gap-2">
                 <span className="text-xs text-[#667085]">Extra Charge:</span>
                 <input
+                title="number"
                   type="number"
                   value={service.extraCharge}
                   onChange={(e) =>
@@ -110,6 +111,7 @@ const Premium = () => {
 
               {/* Toggle */}
               <button
+              title="btn"
                 onClick={() => toggleService(service.id)}
                 className={`relative h-5 w-9 rounded-full transition ${
                   service.enabled ? "bg-black" : "bg-gray-300"

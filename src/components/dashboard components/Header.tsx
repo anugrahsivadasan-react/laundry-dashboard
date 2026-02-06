@@ -1,9 +1,8 @@
-import React from "react";
-import { useState } from "react";
-import CreateOrderModal from "./CreateOrderModal";
+// import { useState } from "react"; 
+// import CreateOrderModal from "./CreateOrderModal";__________________________________no need removed
 
 const Header = () => {
-          const [open, setOpen] = useState(false);
+          // const [open, setOpen] = useState(false);
 
   return (
     <div className="flex items-center justify-between">
@@ -24,16 +23,17 @@ const Header = () => {
         Download Report
       </button>
       <div className="pl-2">
-      <button         onClick={() => setOpen(true)}
+      {/* <button   */}
+            {/* //  onClick={() => setOpen(true)}
  className="h-9 rounded-[10px] text-[14px] leading-[20px] font-normal  px-4 border bg-gradient-to-r from-[#2B7FFF] to-[#9810FA] text-white">
        Create Order
-      </button>
+      </button> */}
       </div>
       </div>
-       <CreateOrderModal
+       {/* <CreateOrderModal__________________________________no need
         isOpen={open}
         onClose={() => setOpen(false)}
-      />
+      /> */}
 
     </div>
   );

@@ -3,7 +3,7 @@ import CustomerStatsCard from "../../components/Customers/CustomerStatsCard";
 import { Users, Star, Mail, Award } from "lucide-react";
 import CustomerSearchBar from "../../components/Customers/CustomerSearchBar";
 import CustomerCard from "../../components/Customers/CustomerCard";
-import AddCustomerModal from "../../components/Customers/AddCustomerModal";
+// import AddCustomerModal from "../../components/Customers/AddCustomerModal";__________________________________no need so  removed
 
 
 
@@ -12,7 +12,7 @@ import AddCustomerModal from "../../components/Customers/AddCustomerModal";
 const Customer: React.FC = () => {
 
 const [search, setSearch] = useState("");
-const [openModal, setOpenModal] = useState(false);
+// const [openModal, setOpenModal] = useState(false);
 
 
 
@@ -86,11 +86,12 @@ const customers = [
           </p>
         </div>
 
-        <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"
-         onClick={() => setOpenModal(true)}>
+        {/* <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"   __________________________________no need so  removed
+         onClick={() => setOpenModal(true)}
+         >
 
           Add Customer
-        </button>
+        </button> */}
       </div>
 
       {/* STATS ROW */}
@@ -140,7 +141,7 @@ const customers = [
 </div>
 
  
-<AddCustomerModal open={openModal} onClose={() => setOpenModal(false)} />
+{/* <AddCustomerModal open={openModal} onClose={() => setOpenModal(false)} /> */}
 
 
     </div>

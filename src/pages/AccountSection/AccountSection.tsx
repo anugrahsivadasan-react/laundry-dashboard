@@ -1,21 +1,42 @@
-import React from 'react'
-
+import React, { useState } from "react";
+import AccountHeader from "../../components/accountSection/AccountHeader";
+import AccountTabs from "../../components/accountSection/AccountTabs";
+import ProfileTab from "../../components/accountSection/AccountTabCards/ProfileCards";
+import SecurityTab from "../../components/accountSection/AccountTabCards/SecuirtyCards";
+import ActiveSessions from "../../components/accountSection/AccountTabCards/ActiveSessionCaards";
+import LoginHistoryTab from "../../components/accountSection/AccountTabCards/LoginHistoryCards";
 const AccountSection: React.FC = () => {
-  return (
-     <div className="p-6 bg-[#F3F6F9] min-h-screen">
-      {/* HEADER */}
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <h1 className="text-[24px] font-semibold text-[#101828]">
-Account & Session   
-     </h1>
-          <p className="text-[14px] font-arimo text-[#6A7282]">
-            Manage your account, security, and active sessions 
-          </p>
-        </div>
-    </div>
-    </div>
-  )
-}
+  const [activeTab, setActiveTab] = useState<Tab>("profile");
 
-export default AccountSection
+  return (
+    <div className="pt-6">
+      {/* Header */}
+      <AccountHeader />
+
+      {/* Tabs */}
+      <AccountTabs
+        activeTab={activeTab}
+        onChange={setActiveTab}
+      />
+
+      {/* TAB CONTENT */}
+      <div className="mt-6">
+        {activeTab === "profile" && <ProfileTab />}
+
+        {activeTab === "security" && (
+         <SecurityTab />
+        )}
+
+        {activeTab === "active" && (
+            <ActiveSessions/>
+        )}
+
+        {activeTab === "login" && (
+          <LoginHistoryTab/>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default AccountSection;
