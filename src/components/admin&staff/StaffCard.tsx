@@ -42,7 +42,7 @@ const StaffCard: React.FC<StaffCardProps> = (props) => {
   /* ---------------- ADMIN & STAFF CARD ---------------- */
   if (props.type === "admin") {
     return (
-      <div className="w-[1708.54px] h-[172.89px] bg-white border-[1.25px] border-gray-200 rounded-[14px] px-[23.98px] py-[23.98px] flex justify-between">
+      <div className=" w-full max-w-[1708.54px] h-[172.89px] bg-white border-[1.25px] border-gray-200 rounded-[14px] px-[23.98px] py-[23.98px] flex justify-between">
         {/* Left */}
         <div className="flex gap-6">
           <div className="w-[52px] h-[52px] rounded-full bg-gray-200 flex items-center justify-center font-semibold text-gray-700">
@@ -76,8 +76,8 @@ const StaffCard: React.FC<StaffCardProps> = (props) => {
 
         {/* Actions */}
         <div className="flex gap-3">
-          <button className="px-4 py-1.5 border rounded-md text-sm">Edit</button>
-          <button className="px-4 py-1.5 border border-red-300 text-red-600 rounded-md">
+          <button className="px-5 h-[30px] border rounded-md text-sm">Edit</button>
+          <button className="px-4  h-[30px] border border-red-300 text-red-600 rounded-md">
             Remove
           </button>
         </div>
