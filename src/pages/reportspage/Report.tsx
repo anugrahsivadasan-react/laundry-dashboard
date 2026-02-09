@@ -31,7 +31,7 @@ Reports & Analytics
             Custom range
 
           </button>
-
+ 
          <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"
          >
 

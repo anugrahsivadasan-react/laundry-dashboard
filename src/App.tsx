@@ -11,6 +11,8 @@ import Report from "./pages/reportspage/Report";
 import AdminAndStaff from "./pages/Admin&Staff/AdminAndStaff";
 import AccountSection from "./pages/AccountSection/AccountSection";
 import SupportAndHelp from "./pages/Supportpage/SupportAndHelp";
+import Settings from "./pages/settingspage/Settings";
+
 
 
 
@@ -42,6 +44,7 @@ function App() {
           <Route path="admin-staff" element={<AdminAndStaff/>} />
           <Route path="account-session" element={<AccountSection/>} />
           <Route path="support" element={<SupportAndHelp/>} />
+          <Route path="settings" element={<Settings/>} />
 
         </Route>
 

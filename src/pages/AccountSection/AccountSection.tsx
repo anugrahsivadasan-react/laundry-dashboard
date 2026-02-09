@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import AccountHeader from "../../components/accountSection/AccountHeader";
-import AccountTabs from "../../components/accountSection/AccountTabs";
-import ProfileTab from "../../components/accountSection/AccountTabCards/ProfileCards";
-import SecurityTab from "../../components/accountSection/AccountTabCards/SecuirtyCards";
-import ActiveSessions from "../../components/accountSection/AccountTabCards/ActiveSessionCaards";
-import LoginHistoryTab from "../../components/accountSection/AccountTabCards/LoginHistoryCards";
+import AccountHeader from "../../components/accountsection/AccountHeader";
+import AccountTabs from "../../components/accountsection/AccountTabs";
+import ProfileTab from "../../components/accountsection/AccountTabCards/ProfileCards";
+import SecurityTab from "../../components/accountsection/AccountTabCards/SecuirtyCards";
+import ActiveSessions from "../../components/accountsection/AccountTabCards/ActiveSessionCaards";
+import LoginHistoryTab from "../../components/accountsection/AccountTabCards/LoginHistoryCards";
+import { type Tab } from "../../components/accountsection/account.types";
+
+
+
 const AccountSection: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Tab>("profile");
 
