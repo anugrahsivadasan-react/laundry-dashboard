@@ -10,6 +10,7 @@ import ServicesAndPricing from "./pages/ServicesAndPricing/ServicesAndPricing";
 import Report from "./pages/reportspage/Report";
 import AdminAndStaff from "./pages/Admin&Staff/AdminAndStaff";
 import AccountSection from "./pages/AccountSection/AccountSection";
+import SupportAndHelp from "./pages/Supportpage/SupportAndHelp";
 
 
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="reports" element={<Report/>} />
           <Route path="admin-staff" element={<AdminAndStaff/>} />
           <Route path="account-session" element={<AccountSection/>} />
+          <Route path="support" element={<SupportAndHelp/>} />
 
         </Route>
 
