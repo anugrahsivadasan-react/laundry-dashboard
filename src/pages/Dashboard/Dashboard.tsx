@@ -37,8 +37,7 @@ const Dashboard = () => {
             <StatsCard title="Pending Picups" value={15} per="5%" color="red" bg="red" icon={<img src={pending} alt="logo" className="w-12 h-12" />} />
             <StatsCard title="In Process" value={23} per="12%" color="purple" bg="purple" icon={<img src={progress} alt="logo" className="w-12 h-12" />} />
             <StatsCard title="Ready for Delivery" value={18} per="12%" color="green" bg= "green" icon={<img src={ready} alt="logo" className="w-12 h-12" />} />
-           
-          </>
+                     </>
         
       </div>
       <div className="flex gap-4">
