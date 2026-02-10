@@ -11,7 +11,7 @@ const tabs = [
   { key: "pricing", label: "Pricing" },
   { key: "schedule", label: "Schedule" },
   { key: "notifications", label: "Notifications" },
-  { key: "security", label: "Security" },
+  { key: "security", label: "Security" }, 
 ];
 
 const SettingsTabsContainer: React.FC = () => {

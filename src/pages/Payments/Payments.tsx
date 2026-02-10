@@ -8,9 +8,14 @@ import PaymentMethods from '../../components/payments/PaymentMethods'
 import PendingCollections from '../../components/payments/PendingCollections'
 import RecentTransactions from '../../components/payments/RecentTransactions'
 
+import RecordPaymentModal from '../../components/payments/RecordPaymentModal'
+import { useState } from 'react'
+
 
 
 const Payments : React.FC = ()=> {
+            const [open, setOpen] = useState(false);
+
   return (
      <div className="p-6 bg-[#F3F6F9] min-h-screen">
       {/* HEADER */}
@@ -23,7 +28,10 @@ const Payments : React.FC = ()=> {
             Track and manage all payment transactions
           </p>
         </div>
-         <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"
+         <button
+                onClick={() => setOpen(true)}
+
+         className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"
          >
 
           Record Payment  
@@ -78,7 +86,13 @@ const Payments : React.FC = ()=> {
 
 <RecentTransactions/>
 
+ <RecordPaymentModal
+        open={open}
+        onClose={() => setOpen(false)}
+      />
+
         </div>
+        
   )
 }
 
