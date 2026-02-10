@@ -18,7 +18,7 @@ const OffersAndCoupons : React.FC = () => {
          <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"
          >
 
-          Record Payment 
+          + Create Offer
         </button>
         </div>
 

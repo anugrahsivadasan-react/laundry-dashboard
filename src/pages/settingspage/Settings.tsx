@@ -1,13 +1,10 @@
 import React from 'react'
-import SettingsTab from '../../components/settingspage/SettingsTab'
-import { useState } from 'react'
-import { type Tab } from '../../components/settingspage/settings.type'
+
 import SettingsTabsContainer from '../../components/settingspage/SettingsTabsContainer'
 
 
 
 const Settings: React.FC = () => {
-      const [activeTab, setActiveTab] = useState<Tab>("general");
     
   return (
    <div className="p-6 bg-[#F3F6F9] min-h-screen">
@@ -31,9 +28,7 @@ const Settings: React.FC = () => {
 
 
         </div>
-        <SettingsTab
- activeTab={activeTab}
-        onChange={setActiveTab}/>
+    
 
 
 
