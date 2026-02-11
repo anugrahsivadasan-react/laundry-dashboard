@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import ReportStatCard from '../../components/reportspage/ReportStatCard'
 import RevenueIcon from '../../assets/icons/revenueicon.svg'
 import UsersIcon from '../../assets/icons/usersicon.svg'
@@ -9,9 +9,16 @@ import TopCustomersCard from '../../components/reportspage/TopCustomersCard'
 import ServicePerformanceCard from '../../components/reportspage/ServicePerformanceChart'
 import ServiceRevenueCard from '../../components/reportspage/ServiceRevenueChart'
 import ServiceStatisticsTable from '../../components/reportspage/ServiceStatisticsTable'
+import DateRangeModal from '../../components/reportspage/DateRangeModal'
+import DownloadReportModal from '../../components/reportspage/DownloadReportModal'
 
 
 const Report:React.FC= () => {
+
+const[openDateRangeModal,setOpenDateRangeModel]=useState(false)
+const[openReportModal,setOpenReportModal]=useState(false)
+
+
   return (
      <div className="p-6 bg-[#F3F6F9] min-h-screen">
       {/* HEADER */}
@@ -27,13 +34,14 @@ Reports & Analytics
 
         <div className='flex gap-2'>
 
-          <button className='h-10 px-4 rounded-lg bg-white text-sm border border-[#0000001A]'>
+          <button className='h-10 px-4 rounded-lg bg-white text-sm border border-[#0000001A]'
+          onClick={()=>setOpenDateRangeModel(true)}>
             Custom range
 
           </button>
  
          <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"
-         >
+         onClick={()=>setOpenReportModal(true)}>
 
           Download report
         </button>
@@ -93,6 +101,15 @@ Reports & Analytics
 <div className='mt-8'>
   <ServiceStatisticsTable/>
 </div>
+
+{/* modals */}
+<DateRangeModal
+open={openDateRangeModal}
+onClose={() => setOpenDateRangeModel(false)}/>
+
+<DownloadReportModal
+open={openReportModal}
+onClose={() => setOpenReportModal(false)}/>
 
         </div>
   )

@@ -1,8 +1,13 @@
 import React from 'react'
 import OffersStats from '../../components/Offers&Coupons/OfferStatCard'
 import OffersList from '../../components/Offers&Coupons/OffersList'
+import CreateOfferModal from '../../components/Offers&Coupons/CreateOfferModal'
+import { useState } from 'react'
 
 const OffersAndCoupons : React.FC = () => {
+
+const [openCreateModal, setOpenCreateModal] = useState(false)
+
   return (
     <div className="p-6 bg-[#F3F6F9] min-h-screen">
       {/* HEADER */}
@@ -15,10 +20,10 @@ const OffersAndCoupons : React.FC = () => {
             Track and manage all payment transactions
           </p>
         </div>
-         <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"
-         >
+         <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90 flex items-center gap-2"
+         onClick={()=> setOpenCreateModal(true)}>
 
-          Record Payment 
+         <span className='text-[20px] '>+</span>  Create Offer
         </button>
         </div>
 
@@ -30,7 +35,15 @@ const OffersAndCoupons : React.FC = () => {
     <OffersList/>
 </div>
 
+<div>
+<CreateOfferModal
+open={openCreateModal}
+onClose={()=> setOpenCreateModal(false)}
+/>
         </div>
+  
+</div>
+
   )
 }
 

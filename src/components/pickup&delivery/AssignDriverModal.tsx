@@ -20,8 +20,8 @@ const AssignDriverModal: React.FC<AssignDriverModalProps> = ({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-      <div className="w-full max-w-[700px]  max-h-[1000px] bg-white rounded-xl shadow-lg overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4">
+      <div className="w-full max-w-[700px]  max-h-[90vh] bg-white rounded-xl shadow-lg overflow-hidden flex flex-col">
 
         {/* HEADER */}
         <div className="flex justify-between items-center px-5 py-4 bg-gradient-to-r from-blue-500 to-purple-500">
@@ -50,7 +50,7 @@ const AssignDriverModal: React.FC<AssignDriverModalProps> = ({
         </div>
 
         {/* DRIVER LIST */}
-        <div className="max-h-[1000px] overflow-y-auto p-4 space-y-4">
+        <div className="max-h-[80vh] overflow-y-auto p-4 space-y-4">
           {drivers.map((driver) => (
             <DriverCard
               key={driver.id}
