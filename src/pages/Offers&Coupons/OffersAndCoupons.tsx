@@ -23,7 +23,7 @@ const [openCreateModal, setOpenCreateModal] = useState(false)
          <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90 flex items-center gap-2"
          onClick={()=> setOpenCreateModal(true)}>
 
-         <span className='text-[20px] '>+</span>  Create Offer
+          + Create Offer
         </button>
         </div>
 

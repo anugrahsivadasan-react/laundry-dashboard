@@ -35,22 +35,33 @@ const SettingsTabsContainer: React.FC = () => {
   return (
     <div className="w-full">
       {/* ---------- Tabs Header ---------- */}
-      <div className="flex flex-wrap gap-2 bg-white border rounded-xl p-2 w-fit">
-        {tabs.map((tab) => (
+      <div className="flex gap-6 mt-6 mb-6 px-">
+      {tabs.map((tab) => {
+        const isActive = activeTab === tab.key;
+
+        return (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition
+            className={`
+              w-[364.34px] h-[35.99px]
+              rounded-[14px]
+              border-[1.25px]
+              text-sm font-semibold
+              transition
               ${
-                activeTab === tab.key
-                  ? "bg-blue-500 text-white shadow"
-                  : "text-gray-600 hover:bg-gray-100"
-              }`}
+                isActive
+                  ? "border-blue-500 bg-blue-50 text-blue-600"
+                  : "border-gray-300 bg-white text-gray-500 hover:bg-gray-50"
+              }
+            `}
           >
             {tab.label}
           </button>
-        ))}
-      </div>
+        );
+      })}
+
+    </div>
 
       {/* ---------- Content ---------- */}
       <div className="mt-8">{renderTab()}</div>
