@@ -36,10 +36,10 @@ const [openCreateModal, setOpenCreateModal] = useState(false)
 </div>
 
 <div>
-<CreateOfferModal
+<CreateOfferModal 
 open={openCreateModal}
 onClose={()=> setOpenCreateModal(false)}
-/>
+/> 
         </div>
   
 </div>
