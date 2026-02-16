@@ -10,6 +10,7 @@ import Home from './pages/Home'
 
 import './App.css'
 import { BrowserRouter, Routes } from 'react-router-dom'
+import Branches from './pages/Branches/Branches'
 
 function App() {
  
@@ -27,6 +28,7 @@ function App() {
 
           {/* pages Route  */}
           <Route path="dashboard" element={<Home />} />
+          <Route path="branches" element={<Branches />} />
           
         </Route>
 

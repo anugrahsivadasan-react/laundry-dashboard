@@ -6,6 +6,9 @@ import adminsIcon from "../../assets/dahboardicons/adminicon.svg";
 import paymentsIcon from "../../assets/dahboardicons/paymenticon.svg";
 import WeeklyRevenueGraph from "../../components/dashboard/WeeklyRevenueGraph";
 import OrderStatusGraph from "../../components/dashboard/OrderStatsGraph";
+import SuperAdminPerformanceChart from "../../components/dashboard/SuperAdminPerformanceChart";
+import SuperAdminQuickActions from "../../components/dashboard/SuperAdminQuickActions";
+
 
 interface StatItem {
   id: number;
@@ -83,11 +86,16 @@ const Dashboard = () => {
         ))}
       </div>
 
-<section className="flex gap-4">
+<section className="flex gap-4 mb-8">
     <WeeklyRevenueGraph/>
 
     <OrderStatusGraph/>
 
+</section>
+
+<section className="flex gap-4 mb-8">
+  <SuperAdminPerformanceChart/>
+  <SuperAdminQuickActions/>
 </section>
 
 
