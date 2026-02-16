@@ -24,6 +24,7 @@ const SecurityTab: React.FC = () => {
     // TODO: connect backend
     console.log("Logout from all devices");
   };
+  
 
   return (
     <div className="flex flex-col gap-6 p-6 w-full">
