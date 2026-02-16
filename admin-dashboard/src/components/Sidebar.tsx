@@ -114,7 +114,7 @@ const Sidebar = () => {
                       transition-all duration-200
                       ${
                         isActive || hovered === label
-                          ? "w-[260px] bg-white text-[#083b9a] font-medium"
+                          ? "w-[259px] bg-white text-[#083b9a] font-medium"
                           : "text-white/90 hover:bg-white/30"
                       }
                     `}
