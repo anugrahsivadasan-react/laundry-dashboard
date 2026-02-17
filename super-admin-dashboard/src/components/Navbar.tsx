@@ -1,5 +1,10 @@
+import { useState } from "react";
 import { FiSearch, FiBell, FiCalendar } from "react-icons/fi";
 import { useLocation } from "react-router-dom";
+import NotificationPanel from "./NotificationPanel";
+ 
+
+
 
 const Navbar: React.FC = () => {
   const { pathname } = useLocation();
@@ -23,6 +28,9 @@ const Navbar: React.FC = () => {
         return "Dashboard";
     }
   };
+
+  const [isOpen, setIsOpen] = useState(false);
+    
 
   return (
     <header className="h-[82px] w-full bg-[#000000]  pl-4 md:pl-10 flex items-center justify-between pr-6">
@@ -59,11 +67,14 @@ const Navbar: React.FC = () => {
           <span className="text-gray-400 text-sm">Today</span>
         </button>
 
-        <div className="relative cursor-pointer">
+        <div className="relative cursor-pointer"
+        onClick={()=>setIsOpen(true)}> 
           <FiBell size={22} className="text-gray-400" />
           <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center">
             3
-          </span>
+          </span> 
+
+
         </div>
 
         <div className="flex items-center gap-3 cursor-pointer">
@@ -82,6 +93,10 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <NotificationPanel
+      isOpen={isOpen}
+      onClose={()=>setIsOpen(false)}/>
     </header>
   );
 };

@@ -120,7 +120,7 @@ const Sidebar:React.FC = () => {
                       transition-all duration-200
                       ${
                         isActive || hovered === label
-                          ? "w-[260px] bg-gradient-to-r from-[#165DFC] to-[#9810FB] text-white font-medium"
+                          ? "w-[259px] bg-gradient-to-r from-[#165DFC] to-[#9810FB] text-white font-medium"
                           : "text-white/90 hover:bg-white/30"
                       }
                     `}

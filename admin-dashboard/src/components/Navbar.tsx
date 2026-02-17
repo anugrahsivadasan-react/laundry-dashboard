@@ -1,7 +1,16 @@
 import { FiSearch, FiBell, FiCalendar } from "react-icons/fi";
 import logo from "../assets/main-logo.svg";
+import NotificationPanel from "../components/NotificationPanel";
+import { useState } from "react";
+
+
 
 const Navbar = () => {
+  
+const [isOpen, setIsOpen] = useState(false);
+
+
+
   return (
     <header className="h-[64px] w-full bg-white border-b border-gray-200 pl-4 md:pl-10 flex items-center justify-between pr-6">
       
@@ -44,23 +53,27 @@ const Navbar = () => {
       <div className="flex items-center gap-6 lg:gap-[60px] min-w-fit pr-4 md:pr-6">
         
         {/* TODAY */}
-        <button className="h-[50px] w-[130px] hidden lg:flex items-center border border-gray-300 rounded-md hover:bg-gray-50">
+        <button className="h-[50px] w-[130px] hidden lg:flex items-center border border-gray-300 rounded-md hover:bg-gray-50"
+          >
           <div className="pl-[10px] text-[#595959]">
             <FiCalendar size={24} />
           </div>
           <div className="pl-[10px] text-[#595959] text-[20px] font-normal leading-[16px] tracking-[0.08em]">
             Today
           </div>
+         
         </button>
 
         {/* NOTIFICATION */}
-        <div className="relative cursor-pointer">
-          <FiBell size={25} className="text-[#000000]" />
+        <div className="relative cursor-pointer"
+        onClick={() => setIsOpen(true)}>
+          <FiBell size={25} className="text-[#000000]" 
+          />
           <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center">
             3
           </span>
         </div>
-
+  
         {/* PROFILE */}
         <div className="flex items-center gap-[10px] cursor-pointer">
           <img
@@ -78,7 +91,15 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+       <NotificationPanel
+          isOpen={isOpen}
+          onClose={()=> setIsOpen(false)}/>
+
+      
     </header>
+
+    
+
   );
 };
 
