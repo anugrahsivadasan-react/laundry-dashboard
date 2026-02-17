@@ -1,10 +1,10 @@
-import Cards from "../../components/Branches/Cards"
-import BranchesTable from "../../components/Branches/BranchesTable" 
-import AddBranchModal from "../../components/Branches/AddBranchModal"
+import AdminCards from "../../components/Adminmanagement/AdminCards"
+import AdminTable from "../../components/Adminmanagement/AdminTable" 
 import { useState } from "react"
+import AdminModal from "../../components/Adminmanagement/AdminModal"
 
 
-const Branches = () => {
+const AdminManagement = () => {
   const [open, setOpen]=useState(false)
   return (
      <div className="p-6 bg-[#0A0A0A] min-h-screen">
@@ -12,10 +12,10 @@ const Branches = () => {
       <div className="flex items-center justify-between mb-6">
         <div>
           <h1 className="text-[24px] font-semibold text-white">
-            Branch Management
+            Admin Management
           </h1>
           <p className="text-[14px] font-arimo text-[#6A7282]">
-            Manage All Your Laundry Branches
+            Manage afmin users across all branches
           </p>
         </div>
 
@@ -23,26 +23,24 @@ const Branches = () => {
          onClick={() => setOpen(true)}
          >
 
-           +  Add Branch
+           +  Add Admin
         </button>
       </div>
-      <Cards />
+      <AdminCards />
       <div className="pt-6">
-        <BranchesTable />
+        <AdminTable />
       </div>
 
-      <AddBranchModal
-    isOpen={open}
-    onClose={() => setOpen(false)}
-    onSubmit={(data) => {
-      // 🔌 call API here
-      console.log(data);
-      setOpen(false);
-    }}
-  />
+    <AdminModal
+  isOpen={open}
+  onClose={() => setOpen(false)}
+  onCreate={(data) => {
+    console.log("Send to backend:", data);
+  }}
+/>
 
         </div>
   )
 }
 
-export default Branches
+export default AdminManagement

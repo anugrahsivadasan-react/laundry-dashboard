@@ -25,7 +25,7 @@ type MenuItem = {
 const menuItems: MenuItem[] = [
   { label: "Dashboard", icon: dashboard, path: "/" },
   { label: "Branches", icon: Branches, path: "/branches" },
-  { label: "Admin Management", icon: admin, path: "/admin-management" },
+  { label: "Admin ", icon: admin, path: "/admin" },
   { label: "Access Control", icon: customers, path: "/access-control" },
   { label: "Services & Pricing", icon: services, path: "/services-pricing" },
   { label: "Orders", icon: orders, path: "/orders" },

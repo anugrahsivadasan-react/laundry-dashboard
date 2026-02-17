@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Route } from 'react-router-dom'
 import DashboardLayout from './layouts/DashboardLayout'
 import Home from './pages/Home'
+import AccessControl from './pages/Access control/AccessControl'
 
 // command to checkout the branch and pull the latest changes from the remote repository:
 // git checkout super-admin
@@ -11,6 +12,7 @@ import Home from './pages/Home'
 import './App.css'
 import { BrowserRouter, Routes } from 'react-router-dom'
 import Branches from './pages/Branches/Branches'
+import AdminManagement from './pages/AdminManagement/AdminManagement'
 
 function App() {
  
@@ -29,6 +31,8 @@ function App() {
           {/* pages Route  */}
           <Route path="dashboard" element={<Home />} />
           <Route path="branches" element={<Branches />} />
+          <Route path="admin" element={<AdminManagement />} />
+          <Route path="access-control" element={<AccessControl />} />
           
         </Route>
 
