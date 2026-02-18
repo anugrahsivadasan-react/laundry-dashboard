@@ -7,9 +7,12 @@ import UserAssignments from '../../components/AccessControl/UserAssignments'
 import AcivityLog from '../../components/AccessControl/AcivityLog'
 import { useState } from 'react'
 import QuickActions from '../../components/AccessControl/QuickAction'
+import CreateRoleModal from '../../components/AccessControl/AccessModal'
+
 
 const AccessControl = () => {
       const [activeTab, setActiveTab] = useState<"Roles" | "Permission" | "Assign" | "Log">("Roles");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
  <div className="p-6 bg-[#0A0A0A] min-h-screen">
@@ -25,7 +28,7 @@ const AccessControl = () => {
         </div>
 
         <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"
-        //  onClick={() => setOpen(true)}
+         onClick={() => setIsModalOpen(true)}
          >
 
            +  Add Admin
@@ -48,7 +51,15 @@ const AccessControl = () => {
             <QuickActions />
         </div>
 
-  
+  <CreateRoleModal
+  isOpen={isModalOpen}
+  onClose={() => setIsModalOpen(false)}
+  onCreate={(data) => {
+    console.log("Create role payload:", data);
+    // 🔌 API call here
+  }}
+/>
+
 
         </div>  )
 }
