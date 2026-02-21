@@ -13,6 +13,7 @@ import './App.css'
 import { BrowserRouter, Routes } from 'react-router-dom'
 import Branches from './pages/Branches/Branches'
 import AdminManagement from './pages/AdminManagement/AdminManagement'
+import ServiceAndPrices from './pages/serviceandprice/ServiceAndPrices'
 
 function App() {
  
@@ -33,6 +34,7 @@ function App() {
           <Route path="branches" element={<Branches />} />
           <Route path="admin" element={<AdminManagement />} />
           <Route path="access-control" element={<AccessControl />} />
+          <Route path="services-pricing" element={<ServiceAndPrices />} />
           
         </Route>
 
