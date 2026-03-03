@@ -48,7 +48,8 @@ const CreateRoleModal: React.FC<Props> = ({
             </p>
           </div>
 
-          <button
+          <button 
+          title="x"
             onClick={onClose}
             className="text-gray-400 hover:text-gray-300"
           >
@@ -83,6 +84,7 @@ const CreateRoleModal: React.FC<Props> = ({
         <div className="mb-4">
           <label className="text-xs text-gray-400">Role Level</label>
           <input
+          title="role"
             type="text"
             value={roleLevel}
             onChange={(e) => setRoleLevel(e.target.value)}

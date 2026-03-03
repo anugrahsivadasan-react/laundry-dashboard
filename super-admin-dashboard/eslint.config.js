@@ -23,10 +23,11 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
 
-      parserOptions: {
-        tsconfigRootDir: path.resolve(),
-        project: "./tsconfig.json",
-      },
+    parserOptions: {
+  tsconfigRootDir: path.resolve(),
+  project: ["./tsconfig.app.json"],
+},
+
     },
   },
 ]);
