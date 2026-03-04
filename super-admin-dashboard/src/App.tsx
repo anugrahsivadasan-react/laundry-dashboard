@@ -3,6 +3,8 @@ import { Route } from 'react-router-dom'
 import DashboardLayout from './layouts/DashboardLayout'
 import Home from './pages/Home'
 import AccessControl from './pages/Access control/AccessControl'
+import Orders from './pages/orders/Orders'
+import Customers from './pages/customers/Customers'
 
 // command to checkout the branch and pull the latest changes from the remote repository:
 // git checkout super-admin
@@ -39,7 +41,9 @@ function App() {
           <Route path="services-pricing" element={<ServiceAndPrices />} />
           <Route path="offers-coupons" element={<OffersAndCoupons/>} />
           <Route path="notifications" element={<NotificationPage/>} />
-           
+         <Route path="Orders" element={<Orders />} />
+          <Route path="Customers" element={<Customers />} />
+          
         </Route>
 
 
