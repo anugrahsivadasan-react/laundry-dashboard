@@ -1,5 +1,8 @@
 
 import { SquarePen } from "lucide-react";
+import { useState } from "react";
+import AddServiceModal from "./AddServiceModal";
+
 
 
 const services = [
@@ -30,6 +33,8 @@ const services = [
 ];
 
 const ServicesTab = () => {
+const [isopen, setIsOpen] = useState(false);
+
   return (
     <div
       className="
@@ -59,10 +64,12 @@ const ServicesTab = () => {
             text-white
             font-medium
           "
+         
           style={{
             background:
               "linear-gradient(90deg, #155DFC 0%, #9810FA 100%)",
           }}
+          onClick={() => setIsOpen(true)}
         >
           + Add Service
         </button>
@@ -124,6 +131,10 @@ const ServicesTab = () => {
             </div>
           ))}
         </div>
+
+<AddServiceModal
+isOpen={isopen}
+onClose={()=>setIsOpen(false)}/>
       </div>
     </div>
   );

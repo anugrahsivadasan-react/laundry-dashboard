@@ -52,6 +52,7 @@ const ServiceAndPrices = () => {
           </p>
         </div>
 
+
         <button className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90">
           + Add Service
         </button>
@@ -66,7 +67,7 @@ const ServiceAndPrices = () => {
           activeTab={activeTab}
           onChange={setActiveTab}
         />
-      </section>
+      </section>     exist 
 
     </div>
   );

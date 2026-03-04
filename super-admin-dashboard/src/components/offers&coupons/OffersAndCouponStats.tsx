@@ -12,7 +12,7 @@ type StatsCardsProps = {
   stats: StatCard[];
 };
 
-const AccessStats: React.FC<StatsCardsProps> = ({ stats }) => {
+const OfferAndCouponsStats : React.FC<StatsCardsProps> = ({ stats }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
       {stats.map((stat, index) => (
@@ -41,4 +41,4 @@ const AccessStats: React.FC<StatsCardsProps> = ({ stats }) => {
   );
 };
 
-export default AccessStats;
+export default OfferAndCouponsStats;

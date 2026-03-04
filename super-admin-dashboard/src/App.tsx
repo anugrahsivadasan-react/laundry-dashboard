@@ -14,6 +14,8 @@ import { BrowserRouter, Routes } from 'react-router-dom'
 import Branches from './pages/Branches/Branches'
 import AdminManagement from './pages/AdminManagement/AdminManagement'
 import ServiceAndPrices from './pages/serviceandprice/ServiceAndPrices'
+import OffersAndCoupons from './pages/offers&coupons/OffersAndCoupons'
+import NotificationPage from './pages/NotificationPage/NotificationPage'
 
 function App() {
  
@@ -35,7 +37,9 @@ function App() {
           <Route path="admin" element={<AdminManagement />} />
           <Route path="access-control" element={<AccessControl />} />
           <Route path="services-pricing" element={<ServiceAndPrices />} />
-          
+          <Route path="offers-coupons" element={<OffersAndCoupons/>} />
+          <Route path="notifications" element={<NotificationPage/>} />
+           
         </Route>
 
 

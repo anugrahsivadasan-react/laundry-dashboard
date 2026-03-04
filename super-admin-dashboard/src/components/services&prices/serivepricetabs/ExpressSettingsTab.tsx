@@ -122,7 +122,7 @@ const ExpressSettingTab = () => {
         <button
           onClick={() => setBranchOverride(!branchOverride)}
           className={`w-12 h-6 flex items-center rounded-full p-1 transition ${
-            branchOverride ? "bg-green-500" : "bg-gray-600"
+            branchOverride ? "bg-bluee-500" : "bg-gray-600"
           }`}
         >
           <div

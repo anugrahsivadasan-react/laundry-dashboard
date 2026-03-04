@@ -1,4 +1,6 @@
 import { SquarePen } from "lucide-react";
+import AddClothCategoryModal from "./AddClothCategoryModal";
+import { useState } from "react";
 
 
 
@@ -48,6 +50,9 @@ const categories = [
 ];
 
 const ClothCategoryTab = () => {
+
+const [isopen, setIsOpen] = useState(false);
+
   return (
     <div
       className="w-full bg-[#171717] border rounded-[14px] p-6"
@@ -64,6 +69,7 @@ const ClothCategoryTab = () => {
 
         <button
           className="px-4 h-9 rounded-lg text-sm text-white font-medium"
+            onClick={() => setIsOpen(true)}
           style={{
             background:
               "linear-gradient(90deg, #155DFC 0%, #9810FA 100%)",
@@ -127,6 +133,10 @@ const ClothCategoryTab = () => {
           </div>
         ))}
       </div>
+<AddClothCategoryModal
+isOpen={isopen}
+onClose={()=>setIsOpen (false)}/>
+
     </div>
   );
 };

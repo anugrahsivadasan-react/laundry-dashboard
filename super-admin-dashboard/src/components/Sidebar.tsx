@@ -116,7 +116,7 @@ const Sidebar:React.FC = () => {
                     className={`
                       flex items-center gap-1 px-5 py-5
                       rounded-md text-[14px]
-                      w-[294px]
+                      w-[290px]
                       transition-all duration-200
                       ${
                         isActive || hovered === label
