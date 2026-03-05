@@ -1,5 +1,4 @@
-import React from "react";
-
+import React from 'react'
 
 type StatCard = {
   title: string;
@@ -12,9 +11,11 @@ type StatsCardsProps = {
   stats: StatCard[];
 };
 
-const AccessStats: React.FC<StatsCardsProps> = ({ stats }) => {
+
+
+const ServiceStatsCard: React.FC<StatsCardsProps> = ({ stats }) => {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
       {stats.map((stat, index) => (
         <div
           key={index}
@@ -38,7 +39,7 @@ const AccessStats: React.FC<StatsCardsProps> = ({ stats }) => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default AccessStats;
+export default ServiceStatsCard

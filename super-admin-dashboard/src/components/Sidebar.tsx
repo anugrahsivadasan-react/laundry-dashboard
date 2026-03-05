@@ -116,11 +116,11 @@ const Sidebar:React.FC = () => {
                     className={`
                       flex items-center gap-1 px-5 py-5
                       rounded-md text-[14px]
-                      w-[294px]
+                      w-[290px]
                       transition-all duration-200
                       ${
                         isActive || hovered === label
-                          ? "w-[259px] bg-gradient-to-r from-[#165DFC] to-[#9810FB] text-white font-medium"
+                          ? "w-[240px] bg-gradient-to-r from-[#165DFC] to-[#9810FB] text-white font-medium"
                           : "text-white/90 hover:bg-white/30"
                       }
                     `}
