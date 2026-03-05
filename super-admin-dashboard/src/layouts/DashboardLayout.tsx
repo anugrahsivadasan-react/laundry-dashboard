@@ -13,7 +13,7 @@ const DashboardLayout: React.FC = () => {
           <Sidebar />
         </div>
       </div>
-
+   
       {/* MAIN AREA */}
       <div className="flex flex-col flex-1 min-w-0">
 
