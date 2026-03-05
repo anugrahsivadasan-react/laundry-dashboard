@@ -1,5 +1,6 @@
 import React from 'react'
 import SecuirityStats from '../../components/SecuirityAndLogs/SecuirityStats'
+import SecuirityTabs from '../../components/SecuirityAndLogs/ScuirityTabs'
 
 const SecuirityAndLogs = () => {
   return (
@@ -18,6 +19,10 @@ Monitor system security and manage activity logs       </p>
       </div>
       <SecuirityStats/>
 
+      <div className="pt-6">
+
+      <SecuirityTabs/>
+</div>
 
     </div>  )
 }
