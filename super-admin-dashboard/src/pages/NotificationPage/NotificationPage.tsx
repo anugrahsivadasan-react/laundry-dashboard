@@ -1,6 +1,9 @@
 import { AlertCircle, Bell, MessageSquare, User } from "lucide-react";
 import NotificationStats from "../../components/notificationspage/NotificationStats";
 import CreateNotificationCard from "../../components/notificationspage/CreateNotificationCard";
+import { useState } from "react";
+import NotificationTabs from "../../components/notificationspage/NotificationTabs";
+
 
 const statsData = [
   {
@@ -30,6 +33,10 @@ const statsData = [
 ];
 
 const NotificationPage = () => {
+
+
+const [activeTab, setActiveTab] = useState<"all" | "system" | "admin" | "promotional">("all");
+
   return (
     <div className="p-6 bg-[#0A0A0A] min-h-screen">
       {/* HEADER */}
@@ -49,6 +56,11 @@ const NotificationPage = () => {
 
 <section className="mt-8">
     <CreateNotificationCard />
+</section>
+
+<section className="mt-8">
+  <NotificationTabs  activeTab={activeTab}
+          onChange ={setActiveTab}/>
 </section>
 
     </div>

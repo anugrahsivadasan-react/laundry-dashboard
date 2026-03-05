@@ -41,7 +41,7 @@ function App() {
           <Route path="services-pricing" element={<ServiceAndPrices />} />
           <Route path="offers-coupons" element={<OffersAndCoupons/>} />
           <Route path="notifications" element={<NotificationPage/>} />
-         <Route path="Orders" element={<Orders />} />
+          <Route path="Orders" element={<Orders />} />
           <Route path="Customers" element={<Customers />} />
           
         </Route>
