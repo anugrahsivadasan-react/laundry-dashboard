@@ -102,7 +102,6 @@ const OrdersPage: React.FC = () => {
           <select className="h-9 px-3 text-sm rounded-md bg-[#111214] border border-gray-800 text-gray-300 focus:outline-none">
             <option>All Branches</option>
           </select>
-          <div className="">yhuihu</div>
 
 
           <select className="h-9 px-3 text-sm rounded-md bg-[#111214] border border-gray-800 text-gray-300 focus:outline-none">

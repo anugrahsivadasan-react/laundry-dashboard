@@ -18,7 +18,10 @@ import AdminManagement from './pages/AdminManagement/AdminManagement'
 import ServiceAndPrices from './pages/serviceandprice/ServiceAndPrices'
 import OffersAndCoupons from './pages/offers&coupons/OffersAndCoupons'
 import NotificationPage from './pages/NotificationPage/NotificationPage'
-
+import PaymentsAndRevenue from './pages/PaymentsAndRevenue/PaymentsAndRevenue'
+import CSMandSettings from './pages/CSMandSettngs/CSMandSettings'
+import SecuirityAndLogs from './pages/SecuirityAndLogs/SecuirityAndLogs'
+import ReportAndAnalytics from './pages/reportandanalytics/ReportAndAnalytics'
 function App() {
  
 
@@ -43,6 +46,10 @@ function App() {
           <Route path="notifications" element={<NotificationPage/>} />
           <Route path="Orders" element={<Orders />} />
           <Route path="Customers" element={<Customers />} />
+          <Route path="payments-revenue" element={<PaymentsAndRevenue />} />
+          <Route path="report-analytics" element={<ReportAndAnalytics/>} />
+          <Route path="support" element={<CSMandSettings />} />
+          <Route path="settings" element={<SecuirityAndLogs />} />
           
         </Route>
 
