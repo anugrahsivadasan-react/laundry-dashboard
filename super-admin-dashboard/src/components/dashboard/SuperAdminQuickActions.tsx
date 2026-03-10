@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useState } from "react"
+import AddBranchModal from "../Branches/AddBranchModal"
+import AdminModal from "../Adminmanagement/AdminModal"
 
 const SuperAdminQuickActions: React.FC = () => {
+  const [adminOpen, setAdminOpen] = useState(false)
+  const [branchOpen, setBranchOpen] = useState(false)
+
   return (
     <div
       className="
@@ -17,9 +22,7 @@ const SuperAdminQuickActions: React.FC = () => {
     >
       {/* Top Section */}
       <div>
-        <h2 className="text-white text-lg font-medium mb-6">
-          Quick Actions
-        </h2>
+        <h2 className="text-white text-lg font-medium mb-6">Quick Actions</h2>
 
         <div className="flex flex-col gap-4">
           {/* Primary Button */}
@@ -39,7 +42,8 @@ const SuperAdminQuickActions: React.FC = () => {
               gap-3
               hover:opacity-90
               transition
-            "
+  "
+            onClick={() => setBranchOpen(true)}
           >
             <span className="text-lg">+</span>
             Add New Branch
@@ -47,78 +51,27 @@ const SuperAdminQuickActions: React.FC = () => {
 
           {/* Secondary Buttons */}
           <button
-            className="
-              h-14
-              rounded-xl
-              text-gray-300
-              border border-[#2a2a2a]
-              bg-[#1e1e1e]
-              flex
-              items-center
-              justify-center
-              gap-3
-              hover:bg-[#232323]
-              transition
-            "
+            className="h-14 rounded-xl text-gray-300 border border-[#2a2a2a] bg-[#1e1e1e] flex items-center justify-center gap-3 hover:bg-[#232323] transition"
+            onClick={() => setAdminOpen(true)}
           >
             <span className="text-lg">+</span>
             Add Admin
           </button>
 
-          <button
-            className="
-              h-14
-              rounded-xl
-              text-gray-300
-              border border-[#2a2a2a]
-              bg-[#1e1e1e]
-              flex
-              items-center
-              justify-center
-              gap-3
-              hover:bg-[#232323]
-              transition
-            "
-          >
+          <button className=" h-14 rounded-xl text-gray-300 border border-[#2a2a2a] bg-[#1e1e1e] flex items-center justify-center gap-3 hover:bg-[#232323] transition">
             <span className="text-lg">+</span>
             Create Offer
           </button>
 
-          <button
-            className="
-              h-14
-              rounded-xl
-              text-gray-300
-              border border-[#2a2a2a]
-              bg-[#1e1e1e]
-              flex
-              items-center
-              justify-center
-              hover:bg-[#232323]
-              transition
-            "
-          >
+          <button className=" h-14 rounded-xl text-gray-300 border border-[#2a2a2a] bg-[#1e1e1e] flex items-center justify-center hover:bg-[#232323] transition ">
             View Reports
           </button>
         </div>
       </div>
 
       {/* System Health Section */}
-      <div
-        className="
-          mt-8
-          p-5
-          rounded-xl
-          border border-[#1f3a8a]
-          bg-gradient-to-br
-          from-[#1e293b]
-          via-[#1a1a2e]
-          to-[#2e1065]
-        "
-      >
-        <h3 className="text-white text-lg font-medium mb-4">
-          System Health
-        </h3>
+      <div className=" mt-8 p-5 rounded-xlborder border-[#1f3a8a] bg-gradient-to-br from-[#1e293b] via-[#1a1a2e]  to-[#2e1065] ">
+        <h3 className="text-white text-lg font-medium mb-4">System Health</h3>
 
         <div className="flex justify-between text-sm mb-2">
           <span className="text-gray-400">Server Status</span>
@@ -135,8 +88,24 @@ const SuperAdminQuickActions: React.FC = () => {
           <span className="text-gray-300">2h ago</span>
         </div>
       </div>
+      <AddBranchModal
+        isOpen={branchOpen}
+        onClose={() => setBranchOpen(false)}
+        onSubmit={(data) => {
+          // 🔌 call API here
+          console.log(data)
+          // setOpen(false)
+        }}
+      />
+      <AdminModal
+        isOpen={adminOpen}
+        onClose={() => setAdminOpen(false)}
+        onCreate={(data) => {
+          console.log("Send to backend:", data)
+        }}
+      />
     </div>
-  );
-};
+  )
+}
 
-export default SuperAdminQuickActions;
+export default SuperAdminQuickActions
