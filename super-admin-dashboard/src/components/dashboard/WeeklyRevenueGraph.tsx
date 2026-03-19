@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import {
   LineChart,
   Line,
@@ -7,13 +7,14 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
-} from "recharts";
+} from "recharts"
+import { useAppSelector } from "../../redux/hooks"
 
 /* ================= TYPES ================= */
 
 export interface RevenueData {
-  day: string;
-  revenue: number;
+  day: string
+  revenue: number
 }
 
 /* ================= SAMPLE DATA ================= */
@@ -26,7 +27,7 @@ const sampleData: RevenueData[] = [
   { day: "Fri", revenue: 7400 },
   { day: "Sat", revenue: 9100 },
   { day: "Sun", revenue: 6700 },
-];
+]
 
 /* ================= TOOLTIP ================= */
 
@@ -34,33 +35,26 @@ const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-[#111111] border border-[#262626] px-4 py-2 rounded-lg shadow-lg">
-        <p className="text-sm text-gray-400">
-          {payload[0].payload.day}
-        </p>
+        <p className="text-sm text-gray-400">{payload[0].payload.day}</p>
         <p className="text-sm font-semibold text-[#2B7FFF]">
           ${payload[0].value.toLocaleString()}
         </p>
       </div>
-    );
+    )
   }
-  return null;
-};
+  return null
+}
 
 /* ================= MAIN COMPONENT ================= */
 
-interface Props {
-  data?: RevenueData[];
-}
-
-const RevenueGraph: React.FC<Props> = ({ data = sampleData }) => {
+const RevenueGraph: React.FC = () => {
+  const { weeklyRevenue } = useAppSelector((s) => s.dash)
+  console.log(weeklyRevenue)
   return (
     <div className="bg-[#111111] rounded-2xl border border-[#262626] p-6 w-full">
-      
       {/* HEADER */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-white text-[16px] font-medium">
-          Weekly Revenue
-        </h2>
+        <h2 className="text-white text-[16px] font-medium">Weekly Revenue</h2>
 
         <button className="text-gray-400 text-sm hover:text-white transition flex items-center gap-1">
           View Details
@@ -71,8 +65,7 @@ const RevenueGraph: React.FC<Props> = ({ data = sampleData }) => {
       {/* CHART */}
       <div className="w-full h-[300px]">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data}>
-
+          <LineChart data={weeklyRevenue}>
             {/* GRID */}
             <CartesianGrid
               strokeDasharray="3 3"
@@ -96,7 +89,10 @@ const RevenueGraph: React.FC<Props> = ({ data = sampleData }) => {
             />
 
             {/* TOOLTIP */}
-            <Tooltip content={<CustomTooltip />} cursor={{ stroke: "#2B7FFF", strokeWidth: 1 }} />
+            <Tooltip
+              content={<CustomTooltip />}
+              cursor={{ stroke: "#2B7FFF", strokeWidth: 1 }}
+            />
 
             {/* REVENUE LINE */}
             <Line
@@ -107,12 +103,11 @@ const RevenueGraph: React.FC<Props> = ({ data = sampleData }) => {
               dot={{ r: 4, fill: "#2B7FFF" }}
               activeDot={{ r: 6 }}
             />
-
           </LineChart>
         </ResponsiveContainer>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default RevenueGraph;
+export default RevenueGraph
