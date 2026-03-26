@@ -25,11 +25,6 @@ export interface AuthState {
   loading: boolean
   error: string | null
 
-  otpSent: boolean
-  expiresIn: number | null
-  otpIssuedAt: number | null
-
-  retryAfter: number | null
   isVerified: boolean
   authChecked: boolean
 }

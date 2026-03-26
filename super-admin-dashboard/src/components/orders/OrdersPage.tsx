@@ -1,65 +1,53 @@
-import React, { useState } from "react";
-import { Search, Eye } from "lucide-react";
+import React, { useState } from "react"
+import { Search, Eye } from "lucide-react"
+import { useAppSelector } from "../../redux/hooks"
 
 /* ================= TYPES ================= */
 
-type OrderStatus = "Processing" | "Ready" | "Delivered" | "Pending";
+type OrderStatus =
+  | "Processing"
+  | "Ready"
+  | "Delivered"
+  | "Pending"
+  | "Cancelled"
 
-interface Order {
-  id: string;
-  customer: string;
-  branch: string;
-  items: number;
-  amount: string;
-  status: OrderStatus;
-  admin: string;
-  datetime: string;
+/* ================= STATUS MAPPING ================= */
+
+const mapOrderStatus = (status: string): OrderStatus => {
+  switch (status) {
+    case "SCHEDULED":
+      return "Processing"
+
+    case "PICKUP":
+    case "WASHING":
+    case "DRYING":
+    case "IRONING":
+      return "Pending"
+
+    case "OUT_FOR_DELIVERY":
+      return "Ready"
+
+    case "DELIVERED":
+      return "Delivered"
+
+    case "CANCELLED":
+      return "Cancelled"
+
+    default:
+      return "Pending"
+  }
 }
 
-/* ================= DUMMY DATA (BACKEND READY) ================= */
-
-const ordersData: Order[] = [
-  {
-    id: "ORD-2026-001",
-    customer: "John Doe",
-    branch: "Downtown",
-    items: 12,
-    amount: "$48.50",
-    status: "Processing",
-    admin: "Sarah J.",
-    datetime: "2026-01-21 10:30 AM",
-  },
-  {
-    id: "ORD-2026-002",
-    customer: "Jane Smith",
-    branch: "Westside",
-    items: 8,
-    amount: "$35.00",
-    status: "Ready",
-    admin: "Mike C.",
-    datetime: "2026-01-21 09:15 AM",
-  },
-  {
-    id: "ORD-2026-003",
-    customer: "Bob Johnson",
-    branch: "Downtown",
-    items: 15,
-    amount: "$67.50",
-    status: "Delivered",
-    admin: "Sarah J.",
-    datetime: "2026-01-20 02:45 PM",
-  },
-  {
-    id: "ORD-2026-004",
-    customer: "Alice Brown",
-    branch: "Eastside",
-    items: 6,
-    amount: "$28.00",
-    status: "Pending",
-    admin: "Emily D.",
-    datetime: "2026-01-21 11:20 AM",
-  },
-];
+interface Order {
+  orderID: string
+  customer: string
+  branchName: string
+  itemsCount: number
+  amount: string
+  status: string
+  branchAdmin: string
+  orderPlacedDate: string
+}
 
 /* ================= STATUS BADGE ================= */
 
@@ -68,18 +56,48 @@ const statusStyles: Record<OrderStatus, string> = {
   Ready: "bg-green-500/10 text-green-400 border border-green-500/20",
   Delivered: "bg-purple-500/10 text-purple-400 border border-purple-500/20",
   Pending: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20",
-};
+  Cancelled: "bg-red-500/10 text-red-400 border border-red-500/20",
+}
 
 /* ================= COMPONENT ================= */
 
 const OrdersPage: React.FC = () => {
-  const [search, setSearch] = useState("");
+  const { orders } = useAppSelector((s) => s.order)
+  console.log(orders)
+  const [search, setSearch] = useState("")
+  const [selectBranch, setSelectBranch] = useState("")
+  const [selectStatus, setSelectStatus] = useState("")
 
-  const filteredOrders = ordersData.filter(
-    (o) =>
-      o.id.toLowerCase().includes(search.toLowerCase()) ||
-      o.customer.toLowerCase().includes(search.toLowerCase())
-  );
+  const filterBranch = [
+    ...new Set(
+      orders
+        .map((o) => o.branchName?.trim())
+        .filter((b) => b && b.toLowerCase() !== "n/a"),
+    ),
+  ]
+
+  const filteredOrders = orders.filter((o) => {
+    const searchText = search.toLowerCase()
+
+    const orderId = String(o.orderID || "")
+      .replace(/[-_]/g, "")
+      .toLowerCase()
+
+    const customer = String(o.customer || "").toLowerCase()
+    const branch = String(o.branchName || "").toLowerCase()
+
+    const uiStatus = mapOrderStatus(o.status)
+
+    const matchesSearch =
+      !search || orderId.includes(searchText) || customer.includes(searchText)
+
+    const matchesBranch =
+      !selectBranch || branch.includes(selectBranch.toLowerCase())
+
+    const matchesStatus = !selectStatus || uiStatus === selectStatus
+    console.log(matchesSearch, matchesBranch, matchesStatus)
+    return matchesSearch && matchesBranch && matchesStatus
+  })
 
   return (
     <div className="py-6 bg-[#0A0A0A] min-h-screen">
@@ -99,13 +117,29 @@ const OrdersPage: React.FC = () => {
 
         {/* DROPDOWNS */}
         <div className="flex gap-2">
-          <select className="h-9 px-3 text-sm rounded-md bg-[#111214] border border-gray-800 text-gray-300 focus:outline-none">
-            <option>All Branches</option>
+          <select
+            onChange={(e) => setSelectBranch(e.target.value)}
+            className="h-9 px-3 text-sm rounded-md bg-[#111214] border border-gray-800 text-gray-300 focus:outline-none"
+          >
+            <option value=""> All Branches </option>
+            {filterBranch.map((o, i) => (
+              <option key={i} value={o}>
+                {o}
+              </option>
+            ))}
           </select>
 
-
-          <select className="h-9 px-3 text-sm rounded-md bg-[#111214] border border-gray-800 text-gray-300 focus:outline-none">
-            <option>All Status</option>
+          <select
+            value={selectStatus}
+            onChange={(e) => setSelectStatus(e.target.value)}
+            className="h-9 px-3 text-sm rounded-md bg-[#111214] border border-gray-800 text-gray-300 focus:outline-none"
+          >
+            <option value="">All Status</option>
+            <option value="Processing">Processing</option>
+            <option value="Pending">Pending</option>
+            <option value="Ready">Ready</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Cancelled">Cancelled</option>
           </select>
         </div>
       </div>
@@ -125,45 +159,46 @@ const OrdersPage: React.FC = () => {
                 <th className="text-left px-4 py-2 font-medium">Amount</th>
                 <th className="text-left px-4 py-2 font-medium">Status</th>
                 <th className="text-left px-4 py-2 font-medium">Admin</th>
-                <th className="text-left px-4 py-2 font-medium">
-                  Date & Time
-                </th>
+                <th className="text-left px-4 py-2 font-medium">Date & Time</th>
                 <th className="text-center px-4 py-2 font-medium">Actions</th>
               </tr>
             </thead>
 
             <tbody>
-              {filteredOrders.map((order) => (
-                <tr
-                  key={order.id}
-                  className="border-b border-gray-800 last:border-none"
-                >
-                  <td className="px-4 py-3 text-gray-300">{order.id}</td>
-                  <td className="px-4 py-3">{order.customer}</td>
-                  <td className="px-4 py-3">{order.branch}</td>
-                  <td className="px-4 py-3">{order.items}</td>
-                  <td className="px-4 py-3">{order.amount}</td>
+              {filteredOrders.map((order) => {
+                const uiStatus = mapOrderStatus(order.status)
+                return (
+                  <tr
+                    key={order.orderID}
+                    className="border-b border-gray-800 last:border-none"
+                  >
+                    <td className="px-4 py-3 text-gray-300">{order.orderID}</td>
+                    <td className="px-4 py-3">{order.customer}</td>
+                    <td className="px-4 py-3">{order.branchName}</td>
+                    <td className="px-4 py-3">{order.itemsCount}</td>
+                    <td className="px-4 py-3">{order.amount}</td>
 
-                  {/* STATUS */}
-                  <td className="px-4 py-3">
-                    <span
-                      className={`px-2 py-0.5 text-[10px] rounded-full ${statusStyles[order.status]}`}
-                    >
-                      {order.status}
-                    </span>
-                  </td>
+                    {/* STATUS */}
+                    <td className="px-4 py-3">
+                      <span
+                        className={`px-2 py-0.5 text-[10px] rounded-full ${statusStyles[uiStatus]}`}
+                      >
+                        {uiStatus}
+                      </span>
+                    </td>
 
-                  <td className="px-4 py-3">{order.admin}</td>
-                  <td className="px-4 py-3">{order.datetime}</td>
+                    <td className="px-4 py-3">{order.branchAdmin}</td>
+                    <td className="px-4 py-3">{order.orderPlacedDate}</td>
 
-                  {/* ACTION */}
-                  <td className="px-4 py-3 text-center">
-                    <button className="text-blue-400 hover:text-blue-300">
-                      <Eye className="w-4 h-4" />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                    {/* ACTION */}
+                    <td className="px-4 py-3 text-center">
+                      <button className="text-blue-400 hover:text-blue-300">
+                        <Eye className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                )
+              })}
             </tbody>
           </table>
 
@@ -176,7 +211,7 @@ const OrdersPage: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default OrdersPage;
+export default OrdersPage

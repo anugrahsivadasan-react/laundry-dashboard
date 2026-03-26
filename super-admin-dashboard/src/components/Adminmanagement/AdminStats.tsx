@@ -1,16 +1,16 @@
-import React from "react";
-import { Shield, Power, PowerOff, Users } from "lucide-react";
+import React from "react"
+import { Shield, Power, PowerOff, Users } from "lucide-react"
 
 type StatCard = {
-  title: string;
-  value: number;
-  icon: React.ReactNode;
-  iconBg: string;
-};
+  title: string
+  value: number
+  icon: React.ReactNode
+  iconBg: string
+}
 
 type StatsCardsProps = {
-  stats: StatCard[];
-};
+  stats: StatCard[]
+}
 
 const AdminStats: React.FC<StatsCardsProps> = ({ stats }) => {
   return (
@@ -30,15 +30,13 @@ const AdminStats: React.FC<StatsCardsProps> = ({ stats }) => {
 
             <div>
               <p className="text-xs text-gray-400">{stat.title}</p>
-              <p className="text-lg font-semibold text-white">
-                {stat.value}
-              </p>
+              <p className="text-lg font-semibold text-white">{stat.value}</p>
             </div>
           </div>
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default AdminStats;
+export default AdminStats

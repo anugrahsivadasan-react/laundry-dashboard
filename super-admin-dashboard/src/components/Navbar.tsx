@@ -1,46 +1,42 @@
-import { useState } from "react";
-import { FiSearch, FiBell, FiCalendar } from "react-icons/fi";
-import { useLocation } from "react-router-dom";
-import NotificationPanel from "./NotificationPanel";
- 
-
-
+import { useState } from "react"
+import { FiSearch, FiBell, FiCalendar } from "react-icons/fi"
+import { useLocation } from "react-router-dom"
+import NotificationPanel from "./NotificationPanel"
+import { useAppSelector } from "../redux/hooks"
 
 const Navbar: React.FC = () => {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation()
+
+  const { user } = useAppSelector((s) => s.auth)
 
   // Convert path to readable title
   const getPageTitle = () => {
-    const path = pathname.split("/")[1];
+    const path = pathname.split("/")[1]
 
     switch (path) {
       case "dashboard":
-        return "Dashboard";
+        return "Dashboard"
       case "admin-management":
-        return "Admin Management";
+        return "Admin Management"
       case "branches":
-        return "Branches";
+        return "Branches"
       case "offers":
-        return "Offers & Coupons";
+        return "Offers & Coupons"
       case "reports":
-        return "Reports & Analytics";
+        return "Reports & Analytics"
       default:
-        return "Dashboard";
+        return "Dashboard"
     }
-  };
+  }
 
-  const [isOpen, setIsOpen] = useState(false);
-    
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <header className="h-[82px] w-full bg-[#000000]  pl-4 md:pl-10 flex items-center justify-between pr-6">
-      
       {/* LEFT */}
       <div className="flex items-center gap-2 min-w-fit">
         <div className="leading-tight hidden sm:block">
-          <p className="text-white text-[18px] font-[700]">
-            {getPageTitle()}
-          </p>
+          <p className="text-white text-[18px] font-[700]">{getPageTitle()}</p>
           <p className="text-[#A1A1A1] text-[14px] font-normal pt-1">
             Super Admin Panel
           </p>
@@ -54,27 +50,26 @@ const Navbar: React.FC = () => {
           <input
             type="text"
             placeholder="Search users, campaigns, tasks"
-            className="w-full bg-transparent focus:outline-none text-sm"
+            className="w-full bg-transparent focus:outline-none text-sm text-gray-400"
           />
         </div>
       </div>
 
       {/* RIGHT */}
       <div className="flex items-center gap-6 min-w-fit">
-
         <button className="hidden lg:flex items-center border border-gray-700 rounded-md px-4 py-2 hover:bg-gray-800 transition">
           <FiCalendar size={18} className="text-gray-400 mr-2" />
           <span className="text-gray-400 text-sm">Today</span>
         </button>
 
-        <div className="relative cursor-pointer"
-        onClick={()=>setIsOpen(true)}> 
+        <div
+          className="relative cursor-pointer"
+          onClick={() => setIsOpen(true)}
+        >
           <FiBell size={22} className="text-gray-400" />
           <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] rounded-full flex items-center justify-center">
             3
-          </span> 
-
-
+          </span>
         </div>
 
         <div className="flex items-center gap-3 cursor-pointer">
@@ -84,21 +79,15 @@ const Navbar: React.FC = () => {
             alt="User"
           />
           <div className="hidden sm:block">
-            <p className="font-medium text-sm text-[#002F96]">
-              Sarah Admin
-            </p>
-            <p className="text-xs text-gray-500">
-              Administrator
-            </p>
+            <p className="font-medium text-sm text-[#002F96]"> {user?.name} </p>
+            <p className="text-xs text-gray-500">{user?.role}</p>
           </div>
         </div>
       </div>
 
-      <NotificationPanel
-      isOpen={isOpen}
-      onClose={()=>setIsOpen(false)}/>
+      <NotificationPanel isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </header>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

@@ -1,5 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import type { Branch } from "../interfaceType/branchType"
+import type {
+  Branch,
+  BranchName,
+  BranchTable,
+} from "../interfaceType/branchType"
 import { apiAxios } from "../../config/axios"
 
 /* CREATE BRANCH */
@@ -10,25 +14,64 @@ export const createBranch = createAsyncThunk<
   { rejectValue: string }
 >("branch/createBranch", async (data, { rejectWithValue }) => {
   try {
-    const res = await apiAxios.post("/super_admin/branches", data)
+    const res = await apiAxios.post("/super_admin/branches/create", data)
     return res.data.data
   } catch (err: any) {
-    return rejectWithValue(err?.response?.data?.message)
+    return rejectWithValue(
+      err?.response?.data?.message || "Something went wrong",
+    )
   }
 })
 
 /* GET ALL BRANCHES */
 
 export const getAllBranches = createAsyncThunk<
-  { data: Branch[]; stats: any },
-  void,
+  {
+    success: boolean
+    range: { from: string; to: string }
+    data: BranchTable[]
+  },
+  { from?: string; to?: string } | void,
   { rejectValue: string }
->("branch/getAllBranches", async (_, { rejectWithValue }) => {
+>("branch/getAllBranches", async (params, { rejectWithValue }) => {
   try {
-    const res = await apiAxios.get("/super_admin/branches")
+    const res = await apiAxios.get("/super_admin/branches/all", {
+      params,
+    })
+
     return res.data
   } catch (err: any) {
     return rejectWithValue(err?.response?.data?.message)
+  }
+})
+
+//stats of branch
+export const getAllBranchestatus = createAsyncThunk<
+  { stats: any },
+  void,
+  { rejectValue: string }
+>("branch/getAllBranchestats", async (_, { rejectWithValue }) => {
+  try {
+    const res = await apiAxios.get("/super_admin/branches/stats")
+    return res.data.stats
+  } catch (err: any) {
+    return rejectWithValue(err?.response?.data?.message)
+  }
+})
+
+export const getAllBranchesName = createAsyncThunk<
+  BranchName[],
+  void,
+  { rejectValue: string }
+>("branch/getAllBranchesName", async (_, { rejectWithValue }) => {
+  try {
+    const res = await apiAxios.get("/super_admin/branches/names")
+
+    return res.data.data
+  } catch (err: any) {
+    return rejectWithValue(
+      err?.response?.data?.message || "Failed to fetch branch names",
+    )
   }
 })
 
@@ -36,14 +79,32 @@ export const getAllBranches = createAsyncThunk<
 
 export const getBranchById = createAsyncThunk<
   Branch,
-  number,
+  string,
   { rejectValue: string }
 >("branch/getBranchById", async (id, { rejectWithValue }) => {
   try {
-    const res = await apiAxios.get(`/super_admin/branches/${id}`)
+    const res = await apiAxios.get(`/super_admin/branches/${id}/single`)
     return res.data.data
   } catch (err: any) {
     return rejectWithValue(err?.response?.data?.message)
+  }
+})
+
+export const updateBranchStatus = createAsyncThunk<
+  Branch,
+  { id: string; status: string },
+  { rejectValue: string }
+>("branch/updateBranchStatus", async ({ id, status }, { rejectWithValue }) => {
+  try {
+    const res = await apiAxios.patch(`/super_admin/branches/status/${id}`, {
+      status,
+    })
+
+    return res.data.data
+  } catch (err: any) {
+    return rejectWithValue(
+      err?.response?.data?.message || "Failed to update status",
+    )
   }
 })
 
@@ -51,11 +112,11 @@ export const getBranchById = createAsyncThunk<
 
 export const updateBranch = createAsyncThunk<
   Branch,
-  { id: number; data: Partial<Branch> },
+  { id: string; data: Partial<Branch> },
   { rejectValue: string }
 >("branch/updateBranch", async ({ id, data }, { rejectWithValue }) => {
   try {
-    const res = await apiAxios.put(`/super_admin/branches/${id}`, data)
+    const res = await apiAxios.put(`/super_admin/branches/${id}/upadate`, data)
     return res.data.data
   } catch (err: any) {
     return rejectWithValue(err?.response?.data?.message)

@@ -1,5 +1,5 @@
 export interface AdminUser {
-  id: number
+  id: string
   name: string
   email: string
   phone: string
@@ -10,23 +10,31 @@ export interface AdminUser {
     name: string
   }
 }
-
-export interface BranchUserStats {
-  totalUsers: number
-  activeUsers: number
-  activeBranchAdmins: number
+export interface BranchUser {
+  id: string
+  name: string
+  initials: string
+  email: string
+  phone: string
+  branch: string
+  role: string
+  status: string
+  lastLogin: string
+  isOnline?: boolean
 }
 
-export interface BranchUserResponse {
-  stats: BranchUserStats
-  data: AdminUser[]
+export interface AdminStats {
+  totalAdmins: number
+  activeAdmins: number
+  newAdminsThisMonth: number
+  branchUsers: number
 }
 
 export interface AdminState {
   profile: AdminUser | null
-  admins: AdminUser[]
-  branchUsers: AdminUser[]
-  stats: BranchUserStats | null
+  admin: AdminUser | null
+  branchUsers: BranchUser[]
+  stats: AdminStats | null
   loading: boolean
   error: string | null
 }

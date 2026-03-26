@@ -1,15 +1,10 @@
-import React, { useState } from "react";
-import {
-  Send,
-  Bell,
-  Save,
-  ChevronDown,
-} from "lucide-react";
+import React, { useState } from "react"
+import { Send, Bell, Save, ChevronDown } from "lucide-react"
 
 const CreateNotificationCard = () => {
-  const [notificationType, setNotificationType] = useState("System Alert");
-  const [audience, setAudience] = useState("All Users");
-  const [priority, setPriority] = useState("Normal");
+  const [notificationType, setNotificationType] = useState("System Alert")
+  const [audience, setAudience] = useState("All Users")
+  const [priority, setPriority] = useState("Normal")
 
   return (
     <div
@@ -26,9 +21,7 @@ const CreateNotificationCard = () => {
       {/* Header */}
       <div className="flex items-center gap-2 mb-6">
         <Bell size={18} className="text-blue-400" />
-        <h2 className="text-lg font-semibold">
-          Create New Notification
-        </h2>
+        <h2 className="text-lg font-semibold">Create New Notification</h2>
       </div>
 
       {/* Form */}
@@ -37,9 +30,7 @@ const CreateNotificationCard = () => {
         <div className="grid grid-cols-2 gap-6">
           {/* Notification Type */}
           <div>
-            <label className="text-sm text-gray-400">
-              Notification Type
-            </label>
+            <label className="text-sm text-gray-400">Notification Type</label>
             <div className="relative mt-2">
               <select
                 value={notificationType}
@@ -68,9 +59,7 @@ const CreateNotificationCard = () => {
 
           {/* Target Audience */}
           <div>
-            <label className="text-sm text-gray-400">
-              Target Audience
-            </label>
+            <label className="text-sm text-gray-400">Target Audience</label>
             <div className="relative mt-2">
               <select
                 value={audience}
@@ -100,9 +89,7 @@ const CreateNotificationCard = () => {
 
         {/* Notification Title */}
         <div>
-          <label className="text-sm text-gray-400">
-            Notification Title
-          </label>
+          <label className="text-sm text-gray-400">Notification Title</label>
           <input
             type="text"
             placeholder="Enter notification title"
@@ -122,9 +109,7 @@ const CreateNotificationCard = () => {
 
         {/* Message */}
         <div>
-          <label className="text-sm text-gray-400">
-            Message
-          </label>
+          <label className="text-sm text-gray-400">Message</label>
           <textarea
             rows={4}
             placeholder="Enter your message here..."
@@ -147,9 +132,7 @@ const CreateNotificationCard = () => {
         <div className="grid grid-cols-2 gap-6">
           {/* Priority */}
           <div>
-            <label className="text-sm text-gray-400">
-              Priority
-            </label>
+            <label className="text-sm text-gray-400">Priority</label>
             <div className="relative mt-2">
               <select
                 value={priority}
@@ -178,11 +161,10 @@ const CreateNotificationCard = () => {
 
           {/* Schedule */}
           <div>
-            <label className="text-sm text-gray-400">
-              Schedule (Optional)
-            </label>
+            <label className="text-sm text-gray-400">Schedule (Optional)</label>
             <input
               type="datetime-local"
+              onChange={(e) => console.log(e.target.value)}
               className="
                 w-full
                 mt-2
@@ -199,9 +181,7 @@ const CreateNotificationCard = () => {
 
         {/* Delivery Channels */}
         <div>
-          <label className="text-sm text-gray-400">
-            Delivery Channels
-          </label>
+          <label className="text-sm text-gray-400">Delivery Channels</label>
 
           <div className="flex gap-10 mt-3 text-sm text-gray-300">
             <label className="flex items-center gap-2">
@@ -259,7 +239,7 @@ const CreateNotificationCard = () => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CreateNotificationCard;
+export default CreateNotificationCard

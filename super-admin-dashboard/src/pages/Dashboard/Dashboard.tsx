@@ -17,6 +17,7 @@ import {
 } from "../../redux/action/dashThunks"
 import socket from "../../config/soket"
 import { getOrderStats } from "../../redux/action/orderThunks"
+import { formatCurrency } from "../../utils/formatCurrency"
 
 interface StatItem {
   id: number
@@ -30,7 +31,7 @@ interface StatItem {
 
 const Dashboard = () => {
   const dispatch = useAppDispatch()
-  const { stats, weeklyRevenue } = useAppSelector((s) => s.dash)
+  const { stats } = useAppSelector((s) => s.dash)
   console.log(stats)
 
   useEffect(() => {
@@ -48,10 +49,24 @@ const Dashboard = () => {
 
       // Example: update state
       dispatch(getDashboardStats({}))
+      dispatch(getWeeklyRevenue())
+      dispatch(getOrderStats())
+    })
+    socket.on("branch-created", (data) => {
+      console.log("Branch created:", data)
+
+      dispatch(getDashboardStats({}))
+    })
+    socket.on("admin-created", (data) => {
+      console.log("Branch created:", data)
+
+      dispatch(getDashboardStats({}))
     })
 
     return () => {
       socket.off("order-created")
+      socket.off("branch-created")
+      socket.off("admin-created")
     }
   }, [socket])
 
@@ -87,7 +102,7 @@ const Dashboard = () => {
     {
       id: 2,
       title: "Total Revenue",
-      value: stats?.totalRevenue,
+      value: formatCurrency(Number(stats?.totalRevenue)),
       changeText: stats?.revenueGrowth,
       changeType: getChangeType(parsePercent(stats?.revenueGrowth)),
       icon: revenueIcon,
@@ -114,13 +129,14 @@ const Dashboard = () => {
     {
       id: 5,
       title: "Pending Payments",
-      value: amount?.toLocaleString("en-IN"),
+      value: formatCurrency(amount),
       changeText: "-23 orders",
       changeType: "negative",
       icon: paymentsIcon,
       iconBgColor: "#FB2C361A",
     },
   ]
+
   return (
     <div className="p-8 bg-[#0A0A0A] min-h-screen ">
       {/* Stats Grid */}

@@ -1,25 +1,48 @@
 import React, { useState } from "react"
+import AdminModal, { type AdminForm } from "../Adminmanagement/AdminModal"
+import { useAppDispatch } from "../../redux/hooks"
+import toast from "react-hot-toast"
+import type { Branch } from "../../redux/interfaceType/branchType"
+import { createBranch } from "../../redux/action/branchThunks"
 import AddBranchModal from "../Branches/AddBranchModal"
-import AdminModal from "../Adminmanagement/AdminModal"
+import { createAdmin } from "../../redux/action/adminThunks"
 
 const SuperAdminQuickActions: React.FC = () => {
+  const dispatch = useAppDispatch()
   const [adminOpen, setAdminOpen] = useState(false)
   const [branchOpen, setBranchOpen] = useState(false)
 
+  const handleCreateBranch = async (data: Branch) => {
+    try {
+      const result = await dispatch(createBranch(data)).unwrap()
+
+      toast.success("Branch created successfully")
+
+      console.log(result)
+
+      // setBranchOpen(false)
+    } catch (error: any) {
+      toast.error(error || "Failed to create branch")
+      throw error
+    }
+  }
+
+  const handleCreateAdmin = async (data: AdminForm) => {
+    try {
+      const result = await dispatch(createAdmin(data)).unwrap()
+
+      toast.success("Branch created successfully")
+
+      console.log(result)
+
+      // setBranchOpen(false)
+    } catch (error: any) {
+      toast.error(error || "Failed to create branch")
+      throw error
+    }
+  }
   return (
-    <div
-      className="
-        w-full
-        xl:max-w-[420px]
-        bg-[#171717]
-        border border-[#262626]
-        rounded-2xl
-        p-6
-        flex
-        flex-col
-        justify-between
-      "
-    >
+    <div className=" w-full xl:max-w-[420px] bg-[#171717] border border-[#262626] rounded-2xl p-6 flex flex-col justify-between">
       {/* Top Section */}
       <div>
         <h2 className="text-white text-lg font-medium mb-6">Quick Actions</h2>
@@ -27,22 +50,7 @@ const SuperAdminQuickActions: React.FC = () => {
         <div className="flex flex-col gap-4">
           {/* Primary Button */}
           <button
-            className="
-              h-14
-              rounded-xl
-              text-white
-              font-medium
-              text-sm
-              bg-gradient-to-r
-              from-blue-600
-              to-purple-600
-              flex
-              items-center
-              justify-center
-              gap-3
-              hover:opacity-90
-              transition
-  "
+            className=" h-14 rounded-xl text-white font-medium text-sm bg-gradient-to-r from-blue-600 to-purple-600 flex items-center justify-center gap-3 hover:opacity-90 transition"
             onClick={() => setBranchOpen(true)}
           >
             <span className="text-lg">+</span>
@@ -91,18 +99,12 @@ const SuperAdminQuickActions: React.FC = () => {
       <AddBranchModal
         isOpen={branchOpen}
         onClose={() => setBranchOpen(false)}
-        onSubmit={(data) => {
-          // 🔌 call API here
-          console.log(data)
-          // setOpen(false)
-        }}
+        onCreate={handleCreateBranch}
       />
       <AdminModal
         isOpen={adminOpen}
         onClose={() => setAdminOpen(false)}
-        onCreate={(data) => {
-          console.log("Send to backend:", data)
-        }}
+        onCreate={handleCreateAdmin}
       />
     </div>
   )

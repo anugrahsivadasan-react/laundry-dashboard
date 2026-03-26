@@ -1,72 +1,34 @@
-import React from "react";
-import { FiSearch, FiMail, FiPhone, FiEye } from "react-icons/fi";
+import React, { useState } from "react"
+import { FiSearch, FiMail, FiPhone, FiEye } from "react-icons/fi"
+import { useAppSelector } from "../../redux/hooks"
 
 type Customer = {
-  id: string;
-  name: string;
-  joined: string;
-  email: string;
-  phone: string;
-  orders: number;
-  totalSpent: string;
-  complaints: number;
-  status: "Active" | "Flagged" | "VIP";
-};
-
-const customers: Customer[] = [
-  {
-    id: "JD",
-    name: "John Doe",
-    joined: "Joined 2025-06-15",
-    email: "john.doe@email.com",
-    phone: "+1 (555) 123-4567",
-    orders: 45,
-    totalSpent: "$1240.50",
-    complaints: 0,
-    status: "Active",
-  },
-  {
-    id: "JS",
-    name: "Jane Smith",
-    joined: "Joined 2025-08-22",
-    email: "jane.smith@email.com",
-    phone: "+1 (555) 234-5678",
-    orders: 32,
-    totalSpent: "$890.00",
-    complaints: 1,
-    status: "Active",
-  },
-  {
-    id: "BW",
-    name: "Bob Wilson",
-    joined: "Joined 2025-11-10",
-    email: "bob.w@email.com",
-    phone: "+1 (555) 345-6789",
-    orders: 12,
-    totalSpent: "$340.00",
-    complaints: 2,
-    status: "Flagged",
-  },
-  {
-    id: "AB",
-    name: "Alice Brown",
-    joined: "Joined 2025-03-05",
-    email: "alice.brown@email.com",
-    phone: "+1 (555) 456-7890",
-    orders: 67,
-    totalSpent: "$2150.75",
-    complaints: 0,
-    status: "VIP",
-  },
-];
+  id: string
+  initials: string
+  name: string
+  joined: string
+  email: string
+  phone: string
+  orders: number
+  totalSpent: number
+  complaints: number
+  status: "ACTIVE" | "BLOCKED" | "VIP"
+}
 
 const statusStyles = {
-  Active: "bg-emerald-500/10 text-emerald-400",
-  Flagged: "bg-red-500/10 text-red-400",
+  ACTIVE: "bg-emerald-500/10 text-emerald-400",
+  BLOCKED: "bg-red-500/10 text-red-400",
   VIP: "bg-purple-500/10 text-purple-400",
-};
+}
 
 const CustomersTable: React.FC = () => {
+  const { users } = useAppSelector((s) => s.customer)
+
+  const [search, setSearch] = useState("")
+  const filterUser = users.filter((user) => {
+    return user.name.toLowerCase().includes(search.toLowerCase())
+  })
+  console.log(users)
   return (
     <div className="w-full  py-6">
       <div className="bg-[#111111] border border-white/10 rounded-xl p-6">
@@ -79,6 +41,7 @@ const CustomersTable: React.FC = () => {
             <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40" />
             <input
               type="text"
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search customers..."
               className="w-full bg-[#0b0b0b] border border-white/10 rounded-md pl-10 pr-3 py-2 text-sm text-white placeholder-white/40 focus:outline-none focus:ring-1 focus:ring-white/20"
             />
@@ -101,7 +64,7 @@ const CustomersTable: React.FC = () => {
             </thead>
 
             <tbody>
-              {customers.map((customer, index) => (
+              {filterUser?.map((customer, index) => (
                 <tr
                   key={index}
                   className="border-b border-white/5 hover:bg-white/[0.02] transition"
@@ -110,7 +73,7 @@ const CustomersTable: React.FC = () => {
                   <td className="py-4">
                     <div className="flex items-center gap-3">
                       <div className="w-9 h-9 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center text-xs font-semibold text-white">
-                        {customer.id}
+                        {customer.initials}
                       </div>
                       <div>
                         <p className="text-white text-sm font-medium">
@@ -138,10 +101,10 @@ const CustomersTable: React.FC = () => {
                   </td>
 
                   {/* Orders */}
-                  <td className="py-4">{customer.orders}</td>
+                  <td className="py-4">{customer.totalOrders}</td>
 
                   {/* Total Spent */}
-                  <td className="py-4">{customer.totalSpent}</td>
+                  <td className="py-4">{`$ ${customer.totalAmount}`}</td>
 
                   {/* Complaints */}
                   <td className="py-4">
@@ -176,7 +139,7 @@ const CustomersTable: React.FC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CustomersTable;
+export default CustomersTable
