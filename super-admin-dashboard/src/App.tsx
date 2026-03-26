@@ -1,9 +1,9 @@
-import { Navigate, Route } from "react-router-dom"
-import DashboardLayout from "./layouts/DashboardLayout"
-import Home from "./pages/Home"
-import AccessControl from "./pages/Access control/AccessControl"
-import Orders from "./pages/orders/Orders"
-import Customers from "./pages/customers/Customers"
+import { Route } from 'react-router-dom'
+import DashboardLayout from './layouts/DashboardLayout'
+import Home from './pages/Home'
+import AccessControl from './pages/Access control/AccessControl'
+import Orders from './pages/orders/Orders'
+import Customers from './pages/customers/Customers'
 
 // command to checkout the branch and pull the latest changes from the remote repository:
 // git checkout super-admin

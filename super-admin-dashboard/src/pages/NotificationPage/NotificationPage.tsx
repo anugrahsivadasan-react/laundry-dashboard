@@ -1,7 +1,7 @@
 import { AlertCircle, Bell, MessageSquare, User } from "lucide-react";
 import NotificationStats from "../../components/notificationspage/NotificationStats";
 import CreateNotificationCard from "../../components/notificationspage/CreateNotificationCard";
-
+import NotificationsPanel from "../../components/notificationspage/NotificationsPanel";
 const statsData = [
   {
     title: "Total sent",
@@ -50,6 +50,7 @@ const NotificationPage = () => {
 <section className="mt-8">
     <CreateNotificationCard />
 </section>
+<NotificationsPanel/>
 
     </div>
   );
