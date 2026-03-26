@@ -1,18 +1,18 @@
 import React from 'react'
 
 
-type NotificatonStatCards ={
+type ReportStatCards ={
     title: string;
     value: number;
     icon: React.ReactNode;
     iconBg: string;
 }
 
-type NotificationStatsProps = {
-    stats: NotificatonStatCards[]; 
+type ReportStatsProps = {
+    stats: ReportStatCards[]; 
 }
 
-const NotificationStats:React.FC<NotificationStatsProps> = ({ stats }) => {
+const ReportStats:React.FC<ReportStatsProps> = ({ stats }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
 {stats.map((stat, index) => (
@@ -39,4 +39,4 @@ const NotificationStats:React.FC<NotificationStatsProps> = ({ stats }) => {
   )
 }
 
-export default NotificationStats
+export default ReportStats
