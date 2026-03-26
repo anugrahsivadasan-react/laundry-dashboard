@@ -5,6 +5,7 @@ import { useState } from "react";
 import NotificationTabs from "../../components/notificationspage/NotificationTabs";
 
 
+import NotificationsPanel from "../../components/notificationspage/NotificationsPanel";
 const statsData = [
   {
     title: "Total sent",
@@ -57,6 +58,7 @@ const [activeTab, setActiveTab] = useState<"all" | "system" | "admin" | "promoti
 <section className="mt-8">
     <CreateNotificationCard />
 </section>
+<NotificationsPanel/>
 
 <section className="mt-8">
   <NotificationTabs  activeTab={activeTab}

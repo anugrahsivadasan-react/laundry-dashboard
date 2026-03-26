@@ -1,12 +1,12 @@
-import React from "react";
+import React from "react"
 
 export interface StatsCardProps {
-  title: string;
-  value: string;
-  changeText?: string;
-  changeType?: "positive" | "negative" | "neutral";
-  icon: string; // local image path
-  iconBgColor?: string;
+  title: string
+  value: number | string | undefined
+  changeText?: string
+  changeType?: "positive" | "negative" | "neutral"
+  icon: string // local image path
+  iconBgColor?: string
 }
 
 const StatsCard: React.FC<StatsCardProps> = ({
@@ -21,8 +21,8 @@ const StatsCard: React.FC<StatsCardProps> = ({
     changeType === "positive"
       ? "text-emerald-500"
       : changeType === "negative"
-      ? "text-red-500"
-      : "text-gray-400";
+        ? "text-red-500"
+        : "text-gray-400"
 
   return (
     <div
@@ -43,9 +43,7 @@ const StatsCard: React.FC<StatsCardProps> = ({
     >
       {/* LEFT CONTENT */}
       <div className="flex flex-col justify-between">
-        <p className="text-sm text-gray-400">
-          {title}
-        </p>
+        <p className="text-sm text-gray-400">{title}</p>
 
         <div>
           <h3 className="text-[24px] font-semibold text-white tracking-tight">
@@ -53,9 +51,7 @@ const StatsCard: React.FC<StatsCardProps> = ({
           </h3>
 
           {changeText && (
-            <p className={`text-xs mt-1 ${changeColor}`}>
-              {changeText}
-            </p>
+            <p className={`text-xs mt-1 ${changeColor}`}>{changeText}</p>
           )}
         </div>
       </div>
@@ -65,14 +61,10 @@ const StatsCard: React.FC<StatsCardProps> = ({
         className="w-[47.99px] h-[47.99px] rounded-lg flex items-center justify-center"
         style={{ backgroundColor: iconBgColor }}
       >
-        <img
-          src={icon}
-          alt={title}
-          className="w-5 h-5 object-contain"
-        />
+        <img src={icon} alt={title} className="w-5 h-5 object-contain" />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default StatsCard;
+export default StatsCard

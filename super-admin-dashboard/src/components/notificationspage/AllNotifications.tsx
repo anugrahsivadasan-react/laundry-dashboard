@@ -1,164 +1,60 @@
-import {
-  Users,
-  ShieldAlert,
-  User,
-  Building,
-} from "lucide-react";
+import React from "react";
+import {type Notification } from "./types";
 
-interface Notification {
-  title: string;
-  message: string;
-  target: string;
-  recipients: string;
-  date: string;
-  time: string;
-  status: "Sent";
+interface Props {
+  data: Notification[];
 }
 
-const notifications: Notification[] = [
-  {
-    title: "Customer Complaint Escalated",
-    message:
-      "High-priority customer complaint #CC-2456 requires immediate attention.",
-    target: "Aluva Branch Admin",
-    recipients: "1",
-    date: "2026-01-23",
-    time: "3:20 PM",
-    status: "Sent",
-  },
-  {
-    title: "Database Backup Completed",
-    message:
-      "Automated database backup completed successfully. All data is secure.",
-    target: "All Admins",
-    recipients: "28",
-    date: "2026-01-23",
-    time: "3:15 AM",
-    status: "Sent",
-  },
-  {
-    title: "High Server Load Detected",
-    message:
-      "Server experiencing high traffic. Performance may be affected.",
-    target: "Tech Team",
-    recipients: "8",
-    date: "2026-01-22",
-    time: "2:45 PM",
-    status: "Sent",
-  },
-  {
-    title: "Spring Cleaning Sale Coming Soon!",
-    message:
-      "Get ready! Our biggest sale starts March 20. Up to 35% off services.",
-    target: "All Customers",
-    recipients: "2,847",
-    date: "2026-01-22",
-    time: "12:00 PM",
-    status: "Sent",
-  },
-];
-
-const getTargetIcon = (target: string) => {
-  if (target.includes("Admin")) return <ShieldAlert size={16} />;
-  if (target.includes("Customers")) return <Users size={16} />;
-  if (target.includes("Team")) return <User size={16} />;
-  return <Building size={16} />;
-};
-
-const AllNotificationTab = () => {
+const AllNotifications: React.FC<Props> = ({ data }) => {
   return (
-    <div
-      className="
-      bg-[#171717]
-      border border-[#262626]
-      rounded-[14px]
-      pt-[24px]
-      pl-[24px]
-      w-full
-      "
-    >
-      {/* TITLE */}
-      <h2 className="text-white text-[16px] font-semibold mb-6">
-        All Notification History
-      </h2>
+    <>
+    <div className="">
+        <h2 className="text-sm text-gray-300 mb-4">
+          All Notification History
+        </h2>
+        <div className="grid grid-cols-6 text-xs text-gray-400 border-b border-white/10 pb-3 mb-3">
+                  <p className="col-span-2">Title & Message</p>
+                  <p>Target</p>
+                  <p>Recipients</p>
+                  <p>Date & Time</p>
+                  <p>Status</p>
+                </div>
+   
+      {data.map((item) => (
+        <div
+          key={item.id}
+          className="grid grid-cols-6 items-start text-sm border-b border-white/5 pb-4"
+        >
+            
+          <div className="col-span-2">
+            <p className="text-white font-medium">{item.title}</p>
+            <p className="text-gray-400 text-xs mt-1">
+              {item.message}
+            </p>
+          </div>
 
-      {/* TABLE */}
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm text-[#A1A1A1]">
+          <p className="text-gray-300 text-xs">{item.target}</p>
 
-          {/* HEADER */}
-          <thead className="border-b border-[#262626] text-xs uppercase">
-            <tr>
-              <th className="pb-4">Title & Message</th>
-              <th className="pb-4">Target</th>
-              <th className="pb-4">Recipients</th>
-              <th className="pb-4">Date & Time</th>
-              <th className="pb-4">Status</th>
-            </tr>
-          </thead>
+          <p className="text-gray-300 text-xs">
+            {item.recipients.toLocaleString()}
+          </p>
 
-          {/* BODY */}
-          <tbody>
-            {notifications.map((item, index) => (
-              <tr
-                key={index}
-                className="border-b border-[#262626] hover:bg-[#1A1A1A]"
-              >
-                {/* TITLE */}
-                <td className="py-5 pr-6">
-                  <p className="text-white text-[14px] font-medium">
-                    {item.title}
-                  </p>
-                  <p className="text-[#A1A1A1] text-[12px]">
-                    {item.message}
-                  </p>
-                </td>
+          <div className="text-gray-300 text-xs">
+            <p>{item.date}</p>
+            <p className="text-gray-500">{item.time}</p>
+          </div>
 
-                {/* TARGET */}
-                <td className="py-5 pr-6">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[#A1A1A1]">
-                      {getTargetIcon(item.target)}
-                    </span>
-                    {item.target}
-                  </div>
-                </td>
-
-                {/* RECIPIENTS */}
-                <td className="py-5 pr-6 text-white">
-                  {item.recipients}
-                </td>
-
-                {/* DATE */}
-                <td className="py-5 pr-6">
-                  <p>{item.date}</p>
-                  <p className="text-xs text-[#777]">{item.time}</p>
-                </td>
-
-                {/* STATUS */}
-                <td className="py-5">
-                  <span
-                    className="
-                    text-[#00C950]
-                    bg-[#00C9501A]
-                    px-3
-                    py-1
-                    rounded-full
-                    text-xs
-                    font-medium
-                    "
-                  >
-                    Sent
-                  </span>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-
-        </table>
+          <div>
+            <span className="text-[10px] px-2 py-1 rounded-full bg-green-600/20 text-green-400">
+              {item.status}
+            </span>
+          </div>
+        </div>
+         
+      ))}
       </div>
-    </div>
+    </>
   );
 };
 
-export default AllNotificationTab;
+export default AllNotifications;

@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import {
   BarChart,
   Bar,
@@ -8,7 +8,8 @@ import {
   CartesianGrid,
   ResponsiveContainer,
   Legend,
-} from "recharts";
+} from "recharts"
+import { useAppSelector } from "../../redux/hooks"
 
 const data = [
   { branch: "Edappally", orders: 7200, revenue: 12000 },
@@ -16,9 +17,10 @@ const data = [
   { branch: "Perumbavoor", orders: 3500, revenue: 9500 },
   { branch: "Kalamassery", orders: 2200, revenue: 8200 },
   { branch: "Palarivattam", orders: 1200, revenue: 7500 },
-];
+]
 
 const SuperAdminPerformanceChart: React.FC = () => {
+  const { reports } = useAppSelector((s) => s.dash)
   return (
     <div
       className="
@@ -38,7 +40,7 @@ const SuperAdminPerformanceChart: React.FC = () => {
       </h2>
 
       <ResponsiveContainer width="100%" height="90%">
-        <BarChart data={data} barGap={20}>
+        <BarChart data={reports} barGap={20}>
           {/* Gradient Definitions */}
           <defs>
             <linearGradient id="ordersGradient" x1="0" y1="0" x2="0" y2="1">
@@ -64,10 +66,7 @@ const SuperAdminPerformanceChart: React.FC = () => {
             tick={{ fill: "#8a8a8a", fontSize: 12 }}
           />
 
-          <YAxis
-            stroke="#8a8a8a"
-            tick={{ fill: "#8a8a8a", fontSize: 12 }}
-          />
+          <YAxis stroke="#8a8a8a" tick={{ fill: "#8a8a8a", fontSize: 12 }} />
 
           <Tooltip
             contentStyle={{
@@ -99,7 +98,7 @@ const SuperAdminPerformanceChart: React.FC = () => {
         </BarChart>
       </ResponsiveContainer>
     </div>
-  );
-};
+  )
+}
 
-export default SuperAdminPerformanceChart;
+export default SuperAdminPerformanceChart
