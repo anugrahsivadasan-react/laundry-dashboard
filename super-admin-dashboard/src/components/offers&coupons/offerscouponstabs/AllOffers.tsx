@@ -24,54 +24,8 @@ interface Offer {
 
 interface AllOffersProps {
   filter: "all" | "active" | "expired" | "scheduled";
+  offers?: Offer[];
 }
-
-const offers: Offer[] = [
-  {
-    id: 1,
-    name: "New Year Special",
-    code: "NEWYEAR2026",
-    discount: "20%",
-    scope: "Global",
-    validity: "2026-01-01 to 2026-01-31",
-    usage: 347,
-    maxUsage: 1000,
-    status: "Active",
-  },
-  {
-    id: 2,
-    name: "First Time Customer",
-    code: "WELCOME15",
-    discount: "15%",
-    scope: "Global",
-    validity: "2025-12-01 to 2025-12-31",
-    usage: 892,
-    maxUsage: 999,
-    status: "Active",
-  },
-  {
-    id: 3,
-    name: "Summer Sale",
-    code: "SUMMER25",
-    discount: "25%",
-    scope: "Global",
-    validity: "2025-06-01 to 2025-08-31",
-    usage: 1987,
-    maxUsage: 2000,
-    status: "Expired",
-  },
-  {
-    id: 4,
-    name: "Valentine Special",
-    code: "VALENTINE2026",
-    discount: "25%",
-    scope: "Global",
-    validity: "2026-02-10 to 2026-02-20",
-    usage: 0,
-    maxUsage: 1000,
-    status: "Scheduled",
-  },
-];
 
 const StatusBadge = ({ status }: { status: StatusType }) => {
   if (status === "Active") {
@@ -97,7 +51,7 @@ const StatusBadge = ({ status }: { status: StatusType }) => {
   );
 };
 
-const AllOffers: React.FC<AllOffersProps> = ({ filter }) => {
+const AllOffers: React.FC<AllOffersProps> = ({ filter, offers }) => {
   // ✅ Filtering logic
   const filteredOffers =
     filter === "all"
@@ -138,10 +92,12 @@ const AllOffers: React.FC<AllOffersProps> = ({ filter }) => {
                   key={offer.id}
                   className="border-b border-[#262626] hover:bg-[#1F1F1F]"
                 >
+                  {/* Offer Name */}
                   <td className="py-4 text-white font-medium">
                     {offer.name}
                   </td>
 
+                  {/* Code */}
                   <td>
                     <div className="flex items-center gap-2">
                       <span className="bg-[#1F1F1F] px-3 py-1 rounded-md text-blue-400 text-xs">
@@ -154,8 +110,10 @@ const AllOffers: React.FC<AllOffersProps> = ({ filter }) => {
                     </div>
                   </td>
 
+                  {/* ✅ IMPORTANT: Keep these fields */}
                   <td>{offer.discount}</td>
                   <td>{offer.scope}</td>
+
                   <td className="text-xs text-gray-400">
                     {offer.validity}
                   </td>
@@ -174,10 +132,12 @@ const AllOffers: React.FC<AllOffersProps> = ({ filter }) => {
                     </div>
                   </td>
 
+                  {/* Status */}
                   <td>
                     <StatusBadge status={offer.status} />
                   </td>
 
+                  {/* Actions */}
                   <td className="text-right">
                     <div className="flex justify-end gap-4">
                       <SquarePen
@@ -196,10 +156,7 @@ const AllOffers: React.FC<AllOffersProps> = ({ filter }) => {
 
             {filteredOffers.length === 0 && (
               <tr>
-                <td
-                  colSpan={8}
-                  className="text-center py-8 text-gray-500"
-                >
+                <td colSpan={8} className="text-center py-8 text-gray-500">
                   No offers found.
                 </td>
               </tr>

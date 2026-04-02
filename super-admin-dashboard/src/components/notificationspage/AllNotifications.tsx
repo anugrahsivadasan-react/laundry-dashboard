@@ -20,7 +20,7 @@ const AllNotifications: React.FC<Props> = ({ data }) => {
                   <p>Status</p>
                 </div>
    
-      {data.map((item) => (
+      {data?.map((item) => (
         <div
           key={item.id}
           className="grid grid-cols-6 items-start text-sm border-b border-white/5 pb-4"

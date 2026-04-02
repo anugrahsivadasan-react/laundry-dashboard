@@ -60,10 +60,10 @@ const [activeTab, setActiveTab] = useState<"all" | "system" | "admin" | "promoti
 </section>
 <NotificationsPanel/>
 
-<section className="mt-8">
+{/* <section className="mt-8">
   <NotificationTabs  activeTab={activeTab}
           onChange ={setActiveTab}/>
-</section>
+</section> */}
 
     </div>
   );
