@@ -2,7 +2,7 @@ import React from "react"
 
 type StatCard = {
   title: string
-  value: number
+  value: number | string
   icon: React.ReactNode
   iconBg: string
 }
