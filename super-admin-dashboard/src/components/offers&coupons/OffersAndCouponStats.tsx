@@ -1,18 +1,17 @@
-import React from "react";
-
+import React from "react"
 
 type StatCard = {
-  title: string;
-  value: number;
-  icon: React.ReactNode;
-  iconBg: string;
-};
+  title: string
+  value: number
+  icon: React.ReactNode
+  iconBg: string
+}
 
 type StatsCardsProps = {
-  stats: StatCard[];
-};
+  stats: StatCard[]
+}
 
-const OfferAndCouponsStats : React.FC<StatsCardsProps> = ({ stats }) => {
+const OfferAndCouponsStats: React.FC<StatsCardsProps> = ({ stats }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
       {stats.map((stat, index) => (
@@ -30,15 +29,13 @@ const OfferAndCouponsStats : React.FC<StatsCardsProps> = ({ stats }) => {
 
             <div>
               <p className="text-xs text-gray-400">{stat.title}</p>
-              <p className="text-lg font-semibold text-white">
-                {stat.value}
-              </p>
+              <p className="text-lg font-semibold text-white">{stat.value}</p>
             </div>
           </div>
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default OfferAndCouponsStats;
+export default OfferAndCouponsStats

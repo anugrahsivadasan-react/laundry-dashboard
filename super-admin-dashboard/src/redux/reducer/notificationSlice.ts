@@ -2,13 +2,16 @@ import { createSlice } from "@reduxjs/toolkit"
 import type { NotificationState } from "../interfaceType/notificationTypes"
 
 import {
+  fetchAdminNotifications,
   fetchNotifications,
+  fetchNotificationStats,
   markNotificationRead,
 } from "../action/notificationThunks"
 
 // ---------- initial state ----------
 const initialState: NotificationState = {
   notifications: [],
+  stats: null,
   unreadCount: 0,
   loading: false,
   error: null,
@@ -73,6 +76,36 @@ const notificationSlice = createSlice({
           notification.isRead = true
           state.unreadCount -= 1
         }
+      })
+      // ---------- FETCH STATS ----------
+      .addCase(fetchNotificationStats.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+
+      .addCase(fetchNotificationStats.fulfilled, (state, action: any) => {
+        state.loading = false
+        state.stats = action.payload
+      })
+
+      .addCase(fetchNotificationStats.rejected, (state, action: any) => {
+        state.loading = false
+        state.error = action.payload || "Failed to fetch notification stats"
+      })
+      // ---------- FETCH STATS ----------
+      .addCase(fetchAdminNotifications.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+
+      .addCase(fetchAdminNotifications.fulfilled, (state, action: any) => {
+        state.loading = false
+        state.notifications = action.payload
+      })
+
+      .addCase(fetchAdminNotifications.rejected, (state, action: any) => {
+        state.loading = false
+        state.error = action.payload || "Failed to fetch notification stats"
       })
   },
 })

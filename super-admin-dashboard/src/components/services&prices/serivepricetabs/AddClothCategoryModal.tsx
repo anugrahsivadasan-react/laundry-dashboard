@@ -204,11 +204,21 @@ const AddClothCategoryModal: React.FC<AddClothCategoryModalProps> = ({
   }
 
   //  build services array (ONLY filled values)
-  const buildUpdateServicesArray = () => {
+
+  const buildServicesArray = () => {
     return servicesList
-      .filter((service) => servicePrices[service.id] !== "")
+      .filter((service) => {
+        const value = servicePrices[service.id]
+
+        return (
+          value !== undefined &&
+          value !== null &&
+          String(value).trim() !== "" &&
+          !isNaN(Number(value))
+        )
+      })
       .map((service) => ({
-        id: editItemIds[service.name] || null,
+        id: selectedRow ? editItemIds[service.name] || null : null,
         serviceId: service.id,
         serviceName: service.name,
         pricePerPiece: Number(servicePrices[service.id]),
@@ -243,7 +253,7 @@ const AddClothCategoryModal: React.FC<AddClothCategoryModalProps> = ({
     formData.append("type", type)
 
     // services
-    formData.append("services", JSON.stringify(buildUpdateServicesArray()))
+    formData.append("services", JSON.stringify(buildServicesArray()))
 
     formData.append(
       "deletedItemIds",
@@ -274,10 +284,10 @@ const AddClothCategoryModal: React.FC<AddClothCategoryModalProps> = ({
     // servicePrices,
     // selectedTags,
     // tagInput,
-    // "servc" + JSON.stringify(buildUpdateServicesArray()),
+    "servc" + JSON.stringify(buildServicesArray()),
     // JSON.stringify(selectedTags.map((tag) => tag.id)),
 
-    JSON.stringify(selectedRow ? detectDeletedItemIds() : []),
+    // JSON.stringify(selectedRow ? detectDeletedItemIds() : []),
   )
   const resetForm = () => {
     setCategory("")

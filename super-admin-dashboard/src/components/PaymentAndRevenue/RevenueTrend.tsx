@@ -5,17 +5,17 @@ import {
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
-} from "recharts";
-import { Download } from "lucide-react";
+} from "recharts"
+import { Download } from "lucide-react"
 
 export interface RevenueTrend {
-  date: string;
-  revenue: number;
+  date: string
+  revenue: number
 }
 
 type Props = {
-  data?: RevenueTrend[];
-};
+  data?: RevenueTrend[]
+}
 
 const defaultData: RevenueTrend[] = [
   { date: "Jan", revenue: 4200 },
@@ -24,9 +24,11 @@ const defaultData: RevenueTrend[] = [
   { date: "Apr", revenue: 5800 },
   { date: "May", revenue: 7200 },
   { date: "Jun", revenue: 8100 },
-];
+]
 
-const RevenueTrendChart = ({ data = defaultData }: Props) => {
+const RevenueTrendChart = ({ data }: Props) => {
+  const chartData = data && data.length > 0 ? data : defaultData
+
   return (
     <div
       className="w-full bg-[#171717] border rounded-[14px] p-6"
@@ -36,31 +38,16 @@ const RevenueTrendChart = ({ data = defaultData }: Props) => {
       }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-12">
         <h2 className="text-white text-sm font-semibold">Revenue Trend</h2>
 
-        <button
-          className="
-          flex items-center gap-2
-          px-3 h-8
-          text-xs
-          rounded-lg
-          border border-[#262626]
-          bg-[#111111]
-          text-gray-300
-          hover:bg-[#1A1A1A]
-          transition
-          "
-        >
-          <Download size={14} />
-          Export
-        </button>
+       
       </div>
 
       {/* Chart */}
       <div className="h-[260px] w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data}>
+          <AreaChart data={chartData}>
             <CartesianGrid stroke="#262626" vertical={false} />
 
             <XAxis
@@ -72,6 +59,7 @@ const RevenueTrendChart = ({ data = defaultData }: Props) => {
             />
 
             <Tooltip
+              formatter={(value: number) => [`₹${value}`, "Revenue"]}
               contentStyle={{
                 background: "#111111",
                 border: "1px solid #262626",
@@ -92,7 +80,7 @@ const RevenueTrendChart = ({ data = defaultData }: Props) => {
         </ResponsiveContainer>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default RevenueTrendChart;
+export default RevenueTrendChart

@@ -44,6 +44,8 @@ interface Order {
   branchName: string
   itemsCount: number
   amount: string
+  paidAmount: string
+  payableAmount: string
   status: string
   branchAdmin: string
   orderPlacedDate: string
@@ -157,6 +159,10 @@ const OrdersPage: React.FC = () => {
                 <th className="text-left px-4 py-2 font-medium">Branch</th>
                 <th className="text-left px-4 py-2 font-medium">Items</th>
                 <th className="text-left px-4 py-2 font-medium">Amount</th>
+                <th className="text-left px-4 py-2 font-medium">paid Amount</th>
+                <th className="text-left px-4 py-2 font-medium">
+                  payable Amount
+                </th>
                 <th className="text-left px-4 py-2 font-medium">Status</th>
                 <th className="text-left px-4 py-2 font-medium">Admin</th>
                 <th className="text-left px-4 py-2 font-medium">Date & Time</th>
@@ -177,6 +183,8 @@ const OrdersPage: React.FC = () => {
                     <td className="px-4 py-3">{order.branchName}</td>
                     <td className="px-4 py-3">{order.itemsCount}</td>
                     <td className="px-4 py-3">{order.amount}</td>
+                    <td className="px-4 py-3">{order.paidAmount}</td>
+                    <td className="px-4 py-3">{order.payableAmount}</td>
 
                     {/* STATUS */}
                     <td className="px-4 py-3">

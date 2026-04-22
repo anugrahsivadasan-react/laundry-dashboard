@@ -6,11 +6,14 @@ import type { Branch } from "../../redux/interfaceType/branchType"
 import { createBranch } from "../../redux/action/branchThunks"
 import AddBranchModal from "../Branches/AddBranchModal"
 import { createAdmin } from "../../redux/action/adminThunks"
+import CouponModal from "../offers&coupons/CouponModal"
+import { apiAxios } from "../../config/axios"
 
 const SuperAdminQuickActions: React.FC = () => {
   const dispatch = useAppDispatch()
   const [adminOpen, setAdminOpen] = useState(false)
   const [branchOpen, setBranchOpen] = useState(false)
+  const [couponOpen, setCouponOpen] = useState(false)
 
   const handleCreateBranch = async (data: Branch) => {
     try {
@@ -41,6 +44,31 @@ const SuperAdminQuickActions: React.FC = () => {
       throw error
     }
   }
+
+  const handleCreateCoupon = async (formData: FormData) => {
+    try {
+      const response = await apiAxios.post(
+        "/super_admin/coupons/create",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      )
+
+      toast.success(response.data?.message || "Coupon created successfully")
+      return response.data
+    } catch (error: any) {
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0] ||
+        "Failed to create coupon"
+
+      toast.error(errorMessage)
+      throw error
+    }
+  }
   return (
     <div className=" w-full xl:max-w-[420px] bg-[#171717] border border-[#262626] rounded-2xl p-6 flex flex-col justify-between">
       {/* Top Section */}
@@ -66,7 +94,10 @@ const SuperAdminQuickActions: React.FC = () => {
             Add Admin
           </button>
 
-          <button className=" h-14 rounded-xl text-gray-300 border border-[#2a2a2a] bg-[#1e1e1e] flex items-center justify-center gap-3 hover:bg-[#232323] transition">
+          <button
+            className=" h-14 rounded-xl text-gray-300 border border-[#2a2a2a] bg-[#1e1e1e] flex items-center justify-center gap-3 hover:bg-[#232323] transition"
+            onClick={() => setCouponOpen(true)}
+          >
             <span className="text-lg">+</span>
             Create Offer
           </button>
@@ -105,6 +136,11 @@ const SuperAdminQuickActions: React.FC = () => {
         isOpen={adminOpen}
         onClose={() => setAdminOpen(false)}
         onCreate={handleCreateAdmin}
+      />
+      <CouponModal
+        isOpen={couponOpen}
+        onClose={() => setCouponOpen(false)}
+        onCreate={handleCreateCoupon}
       />
     </div>
   )

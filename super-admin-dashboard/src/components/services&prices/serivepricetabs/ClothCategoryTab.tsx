@@ -1,4 +1,4 @@
-import { SquarePen } from "lucide-react"
+import { Power, SquarePen, Trash } from "lucide-react"
 import AddClothCategoryModal from "./AddClothCategoryModal"
 import { useEffect, useState } from "react"
 import { apiAxios } from "../../../config/axios"
@@ -101,6 +101,30 @@ const ClothCategoryTab = () => {
       toast.error("Failed to delete service group")
     }
   }
+
+  const handleStatusToggle = async (row: ServiceItemRow) => {
+    try {
+      const ids = Object.values(row.itemIds || {})
+      const newStatus = !(row.status === true)
+
+      if (ids.length === 0) {
+        toast.error("No service items found")
+        return
+      }
+
+      await apiAxios.put("/super_admin/service/service-item/update-status", {
+        ids,
+        status: newStatus,
+      })
+
+      toast.success(`Service group ${newStatus ? "activated" : "deactivated"}`)
+      loadServiceItems()
+    } catch (error) {
+      console.error(error)
+      toast.error("Failed to update status")
+    }
+  }
+
   const filteredHeaders =
     servicesitems?.headers?.filter((h: string) => h !== "status") || []
   const columnStyle = {
@@ -148,7 +172,6 @@ const ClothCategoryTab = () => {
         {/* Table Rows */}
         <div className="mt-4 space-y-2">
           {servicesitems?.rows.map((row: ServiceItemRow, index: number) => {
-            const isActive = row.status === true || row.status === "true"
             return (
               <div
                 key={index}
@@ -170,19 +193,35 @@ const ClothCategoryTab = () => {
                         : "bg-red-900 text-red-400"
                     }`}
                   >
-                    {isActive ? "Active" : "Inactive"}
+                    {row.status ? "Active" : "Inactive"}
                   </span>
                 </span>
 
                 {/* Actions */}
-                <span
-                  className="px-3 flex justify-end"
-                  onClick={() => {
-                    setIsOpen(true)
-                    handleEditClick(row)
-                  }}
-                >
-                  <SquarePen className="w-5 h-5 text-[#51A2FF]" />
+                <span className="px-3 flex justify-end gap-3 ">
+                  <SquarePen
+                    className="w-4 h-4 text-[#51A2FF]"
+                    onClick={() => {
+                      setIsOpen(true)
+                      handleEditClick(row)
+                    }}
+                  />
+
+                  <Power
+                    className={`w-4 h-4 ${
+                      !row.status
+                        ? "text-red-400 hover:text-red-300"
+                        : "text-green-400 hover:text-green-300"
+                    }`}
+                    onClick={() => handleStatusToggle(row)}
+                  />
+
+                  <Trash
+                    className="w-4 h-4 text-[#bf3343]"
+                    onClick={() => {
+                      handleDeleteRow(row)
+                    }}
+                  />
                 </span>
               </div>
             )

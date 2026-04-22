@@ -21,6 +21,13 @@ const CSMpages: React.FC = () => {
   const [faqTitle, setFaqTitle] = useState("")
   const [faqs, setFaqs] = useState<FAQItem[]>([])
 
+  const [loading, setLoading] = useState({
+    about: false,
+    terms: false,
+    privacy: false,
+    faq: false,
+  })
+
   //  store last saved state
   const lastSavedRef = useRef({
     about: { title: "", content: "" },
@@ -243,6 +250,7 @@ const CSMpages: React.FC = () => {
 
           <label className="text-xs text-gray-400">Content</label>
           <textarea
+            rows={6}
             value={aboutContent}
             onChange={(e) => setAboutContent(e.target.value)}
             className="w-full mt-1 mb-4 p-2 rounded bg-[#1a1b1e] border border-[#2a2a2a]"
@@ -329,6 +337,7 @@ const CSMpages: React.FC = () => {
 
           <label className="text-xs text-gray-400">Content</label>
           <textarea
+            rows={6}
             value={termsContent}
             onChange={(e) => setTermsContent(e.target.value)}
             className="w-full mt-1 mb-4 p-2 rounded bg-[#1a1b1e] border border-[#2a2a2a]"
@@ -355,6 +364,7 @@ const CSMpages: React.FC = () => {
 
           <label className="text-xs text-gray-400">Content</label>
           <textarea
+            rows={6}
             value={privacyContent}
             onChange={(e) => setPrivacyContent(e.target.value)}
             className="w-full mt-1 mb-4 p-2 rounded bg-[#1a1b1e] border border-[#2a2a2a]"

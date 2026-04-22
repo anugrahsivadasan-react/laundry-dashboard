@@ -1,23 +1,31 @@
-import { useEffect, useState } from "react";
-import { Lock, Download, User, Clock, CheckCircle, AlertTriangle } from "lucide-react";
+import { useEffect, useState } from "react"
+import {
+  Lock,
+  Download,
+  User,
+  Clock,
+  CheckCircle,
+  AlertTriangle,
+} from "lucide-react"
+import { apiAxios } from "../../config/axios"
 
-const BASE_URL = "YOUR_BASE_URL_HERE";
+const BASE_URL = "YOUR_BASE_URL_HERE"
 
 type LoginLog = {
-  user: string;
-  timestamp: string;
-  ip: string;
-  device: string;
-  status: "Success" | "Failed";
-};
+  user: string
+  timestamp: string
+  ip: string
+  device: string
+  status: "Login" | "Logout"
+}
 
 const LoginHistory = () => {
-  const [logs, setLogs] = useState<LoginLog[]>([]);
+  const [logs, setLogs] = useState<LoginLog[]>([])
 
   const fetchLogs = async () => {
     try {
-      const res = await axios.get(`${BASE_URL}/login-history`);
-      setLogs(res.data);
+      const res = await apiAxios.get(`/super_admin/sessions/all`)
+      setLogs(res.data.data)
     } catch {
       // fallback demo data
       setLogs([
@@ -42,30 +50,29 @@ const LoginHistory = () => {
           device: "Firefox on Linux",
           status: "Failed",
         },
-      ]);
+      ])
     }
-  };
+  }
 
   const exportLogs = async () => {
-    const res = await axios.get(`${BASE_URL}/login-history/export`, {
+    const res = await apiAxios.get(`${BASE_URL}/login-history/export`, {
       responseType: "blob",
-    });
+    })
 
-    const url = window.URL.createObjectURL(new Blob([res.data]));
-    const link = document.createElement("a");
-    link.href = url;
-    link.setAttribute("download", "login_history.csv");
-    document.body.appendChild(link);
-    link.click();
-  };
+    const url = window.URL.createObjectURL(new Blob([res.data]))
+    const link = document.createElement("a")
+    link.href = url
+    link.setAttribute("download", "login_history.csv")
+    document.body.appendChild(link)
+    link.click()
+  }
 
   useEffect(() => {
-    fetchLogs();
-  }, []);
+    fetchLogs()
+  }, [])
 
   return (
     <div className="bg-[#0f0f10] border border-gray-800 rounded-xl p-5 text-white">
-
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2 text-sm">
@@ -102,19 +109,19 @@ const LoginHistory = () => {
                 className="border-b border-gray-900 hover:bg-[#161616]"
               >
                 {/* User */}
-              <td className="py-3">
-  <div className="flex items-center gap-2">
-    <User className="w-3 h-3 text-gray-500" />
-    {log.user}
-  </div>
-</td>
+                <td className="py-3">
+                  <div className="flex items-center gap-2">
+                    <User className="w-3 h-3 text-gray-500" />
+                    {log.user}
+                  </div>
+                </td>
 
-<td className="py-3 text-gray-400">
-  <div className="flex items-center gap-1">
-    <Clock className="w-3 h-3" />
-    {log.timestamp}
-  </div>
-</td>
+                <td className="py-3 text-gray-400">
+                  <div className="flex items-center gap-1">
+                    <Clock className="w-3 h-3" />
+                    {log.timestamp}
+                  </div>
+                </td>
 
                 {/* IP */}
                 <td className="text-gray-400">{log.ip}</td>
@@ -124,15 +131,15 @@ const LoginHistory = () => {
 
                 {/* Status */}
                 <td>
-                  {log.status === "Success" ? (
+                  {log.status === "Login" ? (
                     <span className="flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 w-fit">
                       <CheckCircle className="w-3 h-3" />
-                      Success
+                      Login
                     </span>
                   ) : (
                     <span className="flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-red-500/10 text-red-400 w-fit">
                       <AlertTriangle className="w-3 h-3" />
-                      Failed
+                      Logout
                     </span>
                   )}
                 </td>
@@ -141,9 +148,8 @@ const LoginHistory = () => {
           </tbody>
         </table>
       </div>
-
     </div>
-  );
-};
+  )
+}
 
-export default LoginHistory;
+export default LoginHistory

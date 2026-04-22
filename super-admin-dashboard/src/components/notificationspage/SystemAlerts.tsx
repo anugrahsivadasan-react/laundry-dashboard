@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 import {
   AlertCircle,
   CheckCircle2,
@@ -8,9 +8,10 @@ import {
   Users,
   UserCog,
   Server,
-} from "lucide-react";
+} from "lucide-react"
+import type { AdminNotification } from "../../redux/interfaceType/notificationTypes"
 
-type Severity = "High" | "Info" | "Warning" | "Critical";
+type Severity = "High" | "Info" | "Warning" | "Critical"
 
 const normalizeSeverity = (s: string): Severity => {
   const map: Record<string, Severity> = {
@@ -18,25 +19,25 @@ const normalizeSeverity = (s: string): Severity => {
     info: "Info",
     warning: "Warning",
     critical: "Critical",
-  };
-  return map[s?.toLowerCase()] || "Info";
-};
+  }
+  return map[s?.toLowerCase()] || "Info"
+}
 
 interface AlertItem {
-  id: number;
-  title: string;
-  message: string;
-  severity: string;
-  target: "All Users" | "All Admins" | "Tech Team";
-  recipients: number;
-  readPercent: number;
-  date: string;
-  time: string;
-  status: "Sent";
+  id: number
+  title: string
+  message: string
+  severity: string
+  target: "All Users" | "All Admins" | "Tech Team"
+  recipients: number
+  readPercent: number
+  date: string
+  time: string
+  status: "Sent"
 }
 
 interface Props {
-  data: AlertItem[];
+  data: AdminNotification[]
 }
 
 const severityStyles: Record<Severity, string> = {
@@ -44,34 +45,46 @@ const severityStyles: Record<Severity, string> = {
   Info: "bg-blue-500/10 text-blue-400 border border-blue-500/30",
   Warning: "bg-yellow-500/10 text-yellow-400 border border-yellow-500/30",
   Critical: "bg-red-500/10 text-red-400 border border-red-500/30",
-};
+}
 
 const getLeftIcon = (title: string) => {
   if (title.includes("Maintenance"))
-    return <AlertCircle className="w-4 h-4 text-orange-400" />;
+    return <AlertCircle className="w-4 h-4 text-orange-400" />
   if (title.includes("Backup Completed"))
-    return <CheckCircle2 className="w-4 h-4 text-green-400" />;
+    return <CheckCircle2 className="w-4 h-4 text-green-400" />
   if (title.includes("Load"))
-    return <AlertTriangle className="w-4 h-4 text-yellow-400" />;
+    return <AlertTriangle className="w-4 h-4 text-yellow-400" />
   if (title.includes("Payment"))
-    return <Info className="w-4 h-4 text-blue-400" />;
+    return <Info className="w-4 h-4 text-blue-400" />
   if (title.includes("Security"))
-    return <ShieldAlert className="w-4 h-4 text-red-400" />;
-  return <CheckCircle2 className="w-4 h-4 text-green-400" />;
-};
+    return <ShieldAlert className="w-4 h-4 text-red-400" />
+  return <CheckCircle2 className="w-4 h-4 text-green-400" />
+}
 
 const getTargetIcon = (target: string) => {
-  if (target === "All Users")
-    return <Users className="w-4 h-4 mr-2 text-gray-400" />;
-  if (target === "All Admins")
-    return <UserCog className="w-4 h-4 mr-2 text-gray-400" />;
-  return <Server className="w-4 h-4 mr-2 text-gray-400" />;
-};
+  if (target === "All Users" || target === "All Customers") {
+    return <Users className="w-4 h-4 mr-2 text-gray-400" />
+  }
+
+  if (
+    target === "All Admins" ||
+    target === "All Managers" ||
+    target === "All Staff" ||
+    target === "Branch Admins"
+  ) {
+    return <UserCog className="w-4 h-4 mr-2 text-gray-400" />
+  }
+
+  if (target === "Selected Users") {
+    return <Users className="w-4 h-4 mr-2 text-gray-400" />
+  }
+
+  return <Server className="w-4 h-4 mr-2 text-gray-400" />
+}
 
 const SystemAlerts: React.FC<Props> = ({ data }) => {
   return (
     <div className="w-full  rounded-xl  shadow-xl">
-      
       {/* Header */}
       <div className="flex justify-between items-center px-6 py-4 border-b border-gray-800">
         <div className="flex items-start gap-3">
@@ -81,7 +94,8 @@ const SystemAlerts: React.FC<Props> = ({ data }) => {
               System Alerts & Notifications
             </h2>
             <p className="text-gray-400 text-sm mt-1">
-              System-generated alerts for maintenance, security, and operational updates
+              System-generated alerts for maintenance, security, and operational
+              updates
             </p>
           </div>
         </div>
@@ -104,7 +118,7 @@ const SystemAlerts: React.FC<Props> = ({ data }) => {
       {/* Table Body */}
       <div>
         {data.map((item) => {
-          const severity = normalizeSeverity(item.severity);
+          const severity = normalizeSeverity(item.severity)
 
           return (
             <div
@@ -115,9 +129,7 @@ const SystemAlerts: React.FC<Props> = ({ data }) => {
               <div className="col-span-2 flex gap-3 items-start">
                 <div className="mt-1">{getLeftIcon(item.title)}</div>
                 <div>
-                  <p className="text-white text-sm font-medium">
-                    {item.title}
-                  </p>
+                  <p className="text-white text-sm font-medium">{item.title}</p>
                   <p className="text-gray-400 text-xs mt-1 leading-relaxed">
                     {item.message}
                   </p>
@@ -145,30 +157,37 @@ const SystemAlerts: React.FC<Props> = ({ data }) => {
                   {item.recipients.toLocaleString()}
                 </span>
                 <span className="text-gray-400 text-xs">
-                  {item.readPercent}% read
+                  {item.readPercentage}% read
                 </span>
               </div>
 
               {/* Date */}
               <div className="text-sm text-gray-300 leading-tight">
                 <div>{item.date}</div>
-                <div className="text-gray-500 text-xs mt-1">
-                  {item.time}
-                </div>
+                <div className="text-gray-500 text-xs mt-1">{item.time}</div>
               </div>
 
               {/* Status */}
-              <div className="flex items-center">
-                <span className="bg-green-500/10 text-green-400 text-xs px-3 py-1 rounded-full border border-green-500/30">
+              <div>
+                <span
+                  className={`text-xs px-2 py-1 rounded-full ${
+                    item.status === "Sent"
+                      ? "bg-green-600/20 text-green-400"
+                      : item.status === "Scheduled"
+                        ? "bg-yellow-500/20 text-yellow-400"
+                        : "bg-gray-600/20 text-gray-400"
+                  }`}
+                  title={!item?.scheduledAt ? "" : item?.scheduledAt}
+                >
                   {item.status}
                 </span>
               </div>
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SystemAlerts;
+export default SystemAlerts

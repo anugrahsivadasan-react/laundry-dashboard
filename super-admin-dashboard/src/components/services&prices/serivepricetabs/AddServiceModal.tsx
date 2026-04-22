@@ -41,7 +41,95 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
     "Repair",
     "New",
   ]
-  console.log(selectedService)
+
+  // const [isDropOpen, setIsDropOpen] = useState(false)
+  const [highlightedIndex, setHighlightedIndex] = useState(0)
+
+  const dropdownRef = useRef(null)
+  const optionRefs = useRef([])
+
+  // Open dropdown and set highlighted item to current selected
+  const openDropdown = () => {
+    const selectedIndex = statusOptions.findIndex((item) => item === status)
+    setHighlightedIndex(selectedIndex >= 0 ? selectedIndex : 0)
+    setIsDropOpen(true)
+  }
+
+  // Handle keyboard navigation
+  const handleKeyDown = (e: any) => {
+    if (!selectedService) return
+
+    if (!isDropOpen) {
+      if (
+        e.key === "ArrowDown" ||
+        e.key === "ArrowUp" ||
+        e.key === "Enter" ||
+        e.key === " "
+      ) {
+        e.preventDefault()
+        openDropdown()
+      }
+      return
+    }
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault()
+        setHighlightedIndex((prev) =>
+          prev < statusOptions.length - 1 ? prev + 1 : 0,
+        )
+        break
+
+      case "ArrowUp":
+        e.preventDefault()
+        setHighlightedIndex((prev) =>
+          prev > 0 ? prev - 1 : statusOptions.length - 1,
+        )
+        break
+
+      case "Enter":
+        e.preventDefault()
+        setStatus(statusOptions[highlightedIndex])
+        setIsDropOpen(false)
+        break
+
+      case "Escape":
+        e.preventDefault()
+        setIsDropOpen(false)
+        break
+
+      case "Tab":
+        setIsDropOpen(false)
+        break
+
+      default:
+        break
+    }
+  }
+
+  // Scroll highlighted option into view
+  useEffect(() => {
+    if (isDropOpen && optionRefs.current[highlightedIndex]) {
+      optionRefs.current[highlightedIndex]?.scrollIntoView({
+        block: "nearest",
+      })
+    }
+  }, [highlightedIndex, isDropOpen])
+
+  // Close when clicked outside
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsDropOpen(false)
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [])
+
   useEffect(() => {
     if (selectedService) {
       setServiceName(selectedService.name || "")
@@ -207,11 +295,19 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
               <div>
                 <label className="text-sm text-gray-300">Status</label>
 
-                <div className="relative mt-2">
+                <div className="relative mt-2" ref={dropdownRef}>
                   {/* SELECT BOX */}
                   <div
-                    onClick={() => setIsDropOpen((prev) => !prev)}
-                    className="w-full bg-[#1F1F1F] border border-[#262626] rounded-lg px-3 py-2 text-sm text-white flex justify-between items-center cursor-pointer"
+                    tabIndex={0}
+                    onClick={() => {
+                      if (isDropOpen) {
+                        setIsDropOpen(false)
+                      } else {
+                        openDropdown()
+                      }
+                    }}
+                    onKeyDown={handleKeyDown}
+                    className="w-full bg-[#1F1F1F] border border-[#262626] rounded-lg px-3 py-2 text-sm text-white flex justify-between items-center cursor-pointer outline-none focus:border-blue-500"
                   >
                     {status || "Select Status"}
 
@@ -224,15 +320,21 @@ const AddServiceModal: React.FC<AddServiceModalProps> = ({
 
                   {/* DROPDOWN */}
                   {isDropOpen && (
-                    <div className="absolute bottom-full w-full mb-1 bg-[#1F1F1F] border border-[#262626] rounded-lg z-10">
+                    <div className="absolute bottom-full w-full mb-1 bg-[#1F1F1F] border border-[#262626] rounded-lg z-10 max-h-52 overflow-y-auto">
                       {statusOptions.map((item, index) => (
                         <div
                           key={index}
+                          ref={(el) => (optionRefs.current[index] = el)}
+                          onMouseEnter={() => setHighlightedIndex(index)}
                           onClick={() => {
                             setStatus(item)
                             setIsDropOpen(false)
                           }}
-                          className="px-3 py-2 hover:bg-[#2a2a2a] cursor-pointer text-sm text-white"
+                          className={`px-3 py-2 cursor-pointer text-sm text-white ${
+                            highlightedIndex === index
+                              ? "bg-[#2a2a2a]"
+                              : "hover:bg-[#2a2a2a]"
+                          }`}
                         >
                           {item}
                         </div>

@@ -29,6 +29,7 @@ export const getProfile = createAsyncThunk(
     try {
       const res = await apiAxios.get("/super_admin/profile")
       return res.data.user
+      
     } catch {
       return rejectWithValue("Session expired")
     }

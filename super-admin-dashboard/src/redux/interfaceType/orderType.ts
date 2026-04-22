@@ -14,6 +14,8 @@ export interface OrderItem {
   branchAdmin: string
   itemsCount: number
   amount: number
+  paidAmount: string
+  payableAmount: string
   status: string
   orderPlacedDate: string
 }

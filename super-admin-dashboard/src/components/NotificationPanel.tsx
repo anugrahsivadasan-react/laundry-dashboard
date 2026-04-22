@@ -1,9 +1,9 @@
-import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react"
+import { motion, AnimatePresence } from "framer-motion"
 
 interface Props {
-  isOpen: boolean;
-  onClose: () => void;
+  isOpen: boolean
+  onClose: () => void
 }
 
 const NotificationPanel: React.FC<Props> = ({ isOpen, onClose }) => {
@@ -53,9 +53,7 @@ const NotificationPanel: React.FC<Props> = ({ isOpen, onClose }) => {
                 <h3 className="text-white font-medium text-lg">
                   New order received
                 </h3>
-                <p className="text-gray-400 mt-1">
-                  Order #1234 from John Doe
-                </p>
+                <p className="text-gray-400 mt-1">Order #1234 from John Doe</p>
               </div>
 
               <div>
@@ -74,7 +72,7 @@ const NotificationPanel: React.FC<Props> = ({ isOpen, onClose }) => {
                 <p className="text-gray-400 mt-1">
                   5 items ready for pickup at 3:00 PM
                 </p>
-              </div> 
+              </div>
 
               <div>
                 <h3 className="text-white font-medium text-lg">
@@ -89,9 +87,7 @@ const NotificationPanel: React.FC<Props> = ({ isOpen, onClose }) => {
                 <h3 className="text-white font-medium text-lg">
                   Payment received
                 </h3>
-                <p className="text-gray-400np mt-1">
-                  $125 from Order #1230
-                </p>
+                <p className="text-gray-400np mt-1">$125 from Order #1230</p>
               </div>
 
               {/* Add many items to test scroll */}
@@ -100,7 +96,7 @@ const NotificationPanel: React.FC<Props> = ({ isOpen, onClose }) => {
         </>
       )}
     </AnimatePresence>
-  );
-};
+  )
+}
 
-export default NotificationPanel;
+export default NotificationPanel

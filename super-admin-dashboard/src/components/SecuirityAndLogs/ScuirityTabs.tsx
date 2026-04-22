@@ -1,18 +1,16 @@
-import React, { useState } from "react";
-import ActivityLogs from "./ActivityLogs";
-import LoginHistory from "./LoginHistory";
-import BackupAndREstore from "./BackupAndREstore";
-import SecuiritySettings from "./SecuiritySettings";
+import React, { useState } from "react"
+import ActivityLogs from "./ActivityLogs"
+import LoginHistory from "./LoginHistory"
+import BackupAndREstore from "./BackupAndREstore"
+import SecuiritySettings from "./SecuiritySettings"
 
 const SecuirityTabs = () => {
-  const [activeTab, setActiveTab] = useState("ActivityLogs");
+  const [activeTab, setActiveTab] = useState("ActivityLogs")
 
   return (
     <div className="w-full">
       <div className="flex gap-2 mb-6">
-
         {/* Security Settings */}
-      
 
         {/* Activity Logs */}
         <button
@@ -23,7 +21,8 @@ const SecuirityTabs = () => {
               : "bg-[#1c1c1c] text-gray-300"
           }`}
         >
-Activity Logs        </button>
+          Activity Logs{" "}
+        </button>
 
         {/* Login History */}
         <button
@@ -34,7 +33,8 @@ Activity Logs        </button>
               : "bg-[#1c1c1c] text-gray-300"
           }`}
         >
-Login History        </button>
+          Login History{" "}
+        </button>
 
         {/* Backup & Restore */}
         <button
@@ -48,7 +48,7 @@ Login History        </button>
           Backup & Restore
         </button>
 
-          <button
+        <button
           onClick={() => setActiveTab("SecuiritySettings")}
           className={`px-4 py-1.5 rounded-full text-xs ${
             activeTab === "SecuiritySettings"
@@ -56,9 +56,8 @@ Login History        </button>
               : "bg-[#1c1c1c] text-gray-300"
           }`}
         >
-             Security Settings
+          Security Settings
         </button>
-
       </div>
 
       {/* Tab Content */}
@@ -69,7 +68,7 @@ Login History        </button>
         {activeTab === "SecuiritySettings" && <SecuiritySettings />}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SecuirityTabs;
+export default SecuirityTabs

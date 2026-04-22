@@ -5,6 +5,7 @@ import orderReducer from "./reducer/orderSlice"
 import adminReducer from "./reducer/adminSlice"
 import branchsReducer from "./reducer/branchSlice"
 import customerReducer from "./reducer/customerSlice"
+import notificationsReducer from "./reducer/notificationSlice"
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     admin: adminReducer,
     branchs: branchsReducer,
     customer: customerReducer,
+    notifications: notificationsReducer,
   },
 })
 

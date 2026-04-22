@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import AllNotifications from "./AllNotifications";
-import SystemAlerts from "./SystemAlerts";
-import AdminAlerts from "./AdminAlerts";
-import PromotionalAlerts from "./PromotionalAlerts";
-import {type Notification } from "./types";
+import React, { useEffect, useState } from "react"
+import AllNotifications from "./AllNotifications"
+import SystemAlerts from "./SystemAlerts"
+import AdminAlerts from "./AdminAlerts"
+import PromotionalAlerts from "./PromotionalAlerts"
+import { type Notification } from "./types"
+import { useAppDispatch, useAppSelector } from "../../redux/hooks"
+import { fetchAdminNotifications } from "../../redux/action/notificationThunks"
+import socket from "../../config/soket"
 
 const dummyData: Notification[] = [
   {
@@ -50,18 +53,55 @@ const dummyData: Notification[] = [
     status: "Sent",
     type: "promo",
   },
-];
-
-const tabs = [
-  { key: "all", label: "All Notifications (19)" },
-  { key: "system", label: "System Alerts (6)" },
-  { key: "admin", label: "Admin Alerts (7)" },
-  { key: "promo", label: "Promotional (6)" },
-];
+]
 
 const NotificationsPanel: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("all");
+  const dispatch = useAppDispatch()
+  const [activeTab, setActiveTab] = useState("all")
+  const { notifications } = useAppSelector((s) => s.notifications)
 
+  useEffect(() => {
+    dispatch(fetchAdminNotifications())
+  }, [dispatch])
+
+  useEffect(() => {
+    if (!socket) return
+
+    socket.on("notification-change", (data) => {
+      dispatch(fetchAdminNotifications())
+    })
+
+    return () => {
+      socket.off("notification-change")
+    }
+  }, [socket])
+  console.log(notifications)
+
+  const filleredSystemNotification = notifications.filter(
+    (d) => d.type === "system",
+  )
+  const filleredAdminNotification = notifications.filter(
+    (d) => d.type === "system",
+  )
+  const filleredPermoNotification = notifications.filter(
+    (d) => d.type === "promo",
+  )
+
+  const tabs = [
+    { key: "all", label: `All Notifications (${notifications.length})` },
+    {
+      key: "system",
+      label: `System Alerts (${filleredSystemNotification.length})`,
+    },
+    {
+      key: "admin",
+      label: `Admin Alerts (${filleredAdminNotification.length})`,
+    },
+    {
+      key: "promo",
+      label: `Promotional (${filleredPermoNotification.length})`,
+    },
+  ]
   return (
     <div className="bg-[#0B0B0B] min-h-screen text-white p-6">
       {/* Tabs */}
@@ -83,27 +123,21 @@ const NotificationsPanel: React.FC = () => {
 
       {/* Table */}
       <div className="bg-[#111111] rounded-xl p-4 border border-white/10">
-        
-
-        
-
         <div className="flex flex-col gap-4">
-          {activeTab === "all" && (
-            <AllNotifications data={dummyData} />
-          )}
+          {activeTab === "all" && <AllNotifications data={notifications} />}
           {activeTab === "system" && (
-            <SystemAlerts data={dummyData.filter(d => d.type === "system")} />
+            <SystemAlerts data={filleredSystemNotification} />
           )}
           {activeTab === "admin" && (
-            <AdminAlerts data={dummyData.filter(d => d.type === "admin")} />
+            <AdminAlerts data={filleredAdminNotification} />
           )}
           {activeTab === "promo" && (
-            <PromotionalAlerts data={dummyData.filter(d => d.type === "promo")} />
+            <PromotionalAlerts data={filleredPermoNotification} />
           )}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default NotificationsPanel;
+export default NotificationsPanel

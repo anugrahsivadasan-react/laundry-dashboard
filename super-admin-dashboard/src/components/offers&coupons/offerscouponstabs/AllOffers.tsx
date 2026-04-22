@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react"
 import {
   Copy,
   Trash2,
@@ -6,60 +6,137 @@ import {
   Clock,
   XCircle,
   SquarePen,
-} from "lucide-react";
+  Power,
+} from "lucide-react"
+import toast from "react-hot-toast"
+import { apiAxios } from "../../../config/axios"
+import { getImage } from "../../../utils/getImage"
 
-type StatusType = "Active" | "Expired" | "Scheduled";
+type StatusType = "Active" | "Expired" | "Scheduled" | "Inactive"
 
 interface Offer {
-  id: number;
-  name: string;
-  code: string;
-  discount: string;
-  scope: string;
-  validity: string;
-  usage: number;
-  maxUsage: number;
-  status: StatusType;
+  id: string
+  name: string
+  code: string
+  discount: string
+  scope: string
+  validity: string
+  usage: number
+  maxUsage: number | null
+  status: StatusType
+  image?: string
+  isActive?: boolean
 }
 
 interface AllOffersProps {
-  filter: "all" | "active" | "expired" | "scheduled";
-  offers?: Offer[];
+  filter: "all" | "active" | "expired" | "scheduled"
+  refreshKey?: number
+  onEdit?: (offer: Offer) => void
+  onDelete?: (offer: Offer) => void
+}
+
+type CouponListResponse = {
+  success: boolean
+  data: Offer[]
 }
 
 const StatusBadge = ({ status }: { status: StatusType }) => {
   if (status === "Active") {
     return (
-      <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-green-900/30 text-green-400 text-xs">
+      <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-green-900/30 text-green-400 text-xs w-fit">
         <CheckCircle size={14} /> Active
       </span>
-    );
+    )
+  }
+  if (status === "Inactive") {
+    return (
+      <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-red-900/30 text-red-400 text-xs w-fit">
+        <XCircle size={14} /> Inactive
+      </span>
+    )
   }
 
   if (status === "Expired") {
     return (
-      <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-gray-800 text-gray-400 text-xs">
+      <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-gray-800 text-gray-400 text-xs w-fit">
         <XCircle size={14} /> Expired
       </span>
-    );
+    )
   }
 
   return (
-    <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-blue-900/30 text-blue-400 text-xs">
+    <span className="flex items-center gap-1 px-3 py-1 rounded-full bg-blue-900/30 text-blue-400 text-xs w-fit">
       <Clock size={14} /> Scheduled
     </span>
-  );
-};
+  )
+}
 
-const AllOffers: React.FC<AllOffersProps> = ({ filter, offers }) => {
-  // ✅ Filtering logic
-  const filteredOffers =
-    filter === "all"
-      ? offers
-      : offers.filter(
-          (offer) =>
-            offer.status.toLowerCase() === filter.toLowerCase()
-        );
+const AllOffers: React.FC<AllOffersProps> = ({
+  filter,
+  refreshKey,
+  onEdit,
+  onDelete,
+}) => {
+  const [offers, setOffers] = useState<Offer[]>([])
+  const [loading, setLoading] = useState(false)
+
+  // ================= FETCH ALL COUPONS =================
+  const fetchCoupons = useCallback(async () => {
+    try {
+      setLoading(true)
+
+      const response = await apiAxios.get<CouponListResponse>(
+        "/super_admin/coupons/all",
+      )
+
+      setOffers(response.data?.data || [])
+    } catch (error: any) {
+      console.error("Failed to fetch coupons:", error)
+      toast.error("Failed to load offers")
+      setOffers([])
+    } finally {
+      setLoading(false)
+    }
+  }, [])
+
+  useEffect(() => {
+    fetchCoupons()
+  }, [fetchCoupons, refreshKey])
+
+  const handleStatusToggle = async (id: string) => {
+    try {
+      const res = await apiAxios.patch(
+        `/super_admin/coupons/toggle-status/${id}`,
+      )
+
+      toast.success(
+        `coupon is ${res.data?.isActive ? "activated" : "deactivated"}`,
+      )
+      fetchCoupons()
+    } catch (error) {
+      console.error(error)
+      toast.error("Failed to update status")
+    }
+  }
+
+  // ================= FILTER =================
+  const filteredOffers = useMemo(() => {
+    if (filter === "all") return offers
+
+    return offers.filter(
+      (offer) => offer.status.toLowerCase() === filter.toLowerCase(),
+    )
+  }, [offers, filter])
+
+  // ================= COPY CODE =================
+  const handleCopy = async (code: string) => {
+    try {
+      await navigator.clipboard.writeText(code)
+      toast.success("Coupon code copied")
+    } catch {
+      toast.error("Failed to copy code")
+    }
+  }
 
   return (
     <div className="w-full bg-[#171717] border border-[#262626] rounded-[14px] px-[24px] py-[24px]">
@@ -68,10 +145,11 @@ const AllOffers: React.FC<AllOffersProps> = ({ filter, offers }) => {
       </h2>
 
       <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left text-gray-300">
-          <thead className="text-xs text-gray-400 border-b border-[#262626]">
-            <tr>
-              <th className="py-3">Offer Name</th>
+        <table className="w-full text-sm text-left text-gray-300 min-w-[1100px] border-separate border-spacing-y-2">
+          {/* HEADER */}
+          <thead className="text-xs text-gray-400">
+            <tr className="[&>th]:px-4 [&>th]:py-3 ">
+              <th className="w-[220px]">Offer Name</th>
               <th>Code</th>
               <th>Discount</th>
               <th>Scope</th>
@@ -82,90 +160,126 @@ const AllOffers: React.FC<AllOffersProps> = ({ filter, offers }) => {
             </tr>
           </thead>
 
+          {/* BODY */}
           <tbody>
-            {filteredOffers.map((offer) => {
-              const percentage =
-                (offer.usage / offer.maxUsage) * 100;
-
-              return (
-                <tr
-                  key={offer.id}
-                  className="border-b border-[#262626] hover:bg-[#1F1F1F]"
-                >
-                  {/* Offer Name */}
-                  <td className="py-4 text-white font-medium">
-                    {offer.name}
-                  </td>
-
-                  {/* Code */}
-                  <td>
-                    <div className="flex items-center gap-2">
-                      <span className="bg-[#1F1F1F] px-3 py-1 rounded-md text-blue-400 text-xs">
-                        {offer.code}
-                      </span>
-                      <Copy
-                        size={14}
-                        className="cursor-pointer text-gray-400 hover:text-white"
-                      />
-                    </div>
-                  </td>
-
-                  {/* ✅ IMPORTANT: Keep these fields */}
-                  <td>{offer.discount}</td>
-                  <td>{offer.scope}</td>
-
-                  <td className="text-xs text-gray-400">
-                    {offer.validity}
-                  </td>
-
-                  <td>
-                    <div className="w-[140px]">
-                      <div className="text-xs mb-1">
-                        {offer.usage} / {offer.maxUsage}
-                      </div>
-                      <div className="w-full h-1.5 bg-[#262626] rounded-full">
-                        <div
-                          className="h-1.5 rounded-full bg-blue-500"
-                          style={{ width: `${percentage}%` }}
-                        />
-                      </div>
-                    </div>
-                  </td>
-
-                  {/* Status */}
-                  <td>
-                    <StatusBadge status={offer.status} />
-                  </td>
-
-                  {/* Actions */}
-                  <td className="text-right">
-                    <div className="flex justify-end gap-4">
-                      <SquarePen
-                        size={16}
-                        className="text-blue-400 cursor-pointer hover:scale-110"
-                      />
-                      <Trash2
-                        size={16}
-                        className="text-red-400 cursor-pointer hover:scale-110"
-                      />
-                    </div>
+            {loading ? (
+              [...Array(5)].map((_, index) => (
+                <tr key={index}>
+                  <td colSpan={8} className="px-4 py-4">
+                    <div className="h-12 rounded-lg bg-[#1F1F1F] animate-pulse" />
                   </td>
                 </tr>
-              );
-            })}
-
-            {filteredOffers.length === 0 && (
+              ))
+            ) : filteredOffers.length === 0 ? (
               <tr>
                 <td colSpan={8} className="text-center py-8 text-gray-500">
                   No offers found.
                 </td>
               </tr>
+            ) : (
+              filteredOffers.map((offer) => {
+                const percentage =
+                  offer.maxUsage && offer.maxUsage > 0
+                    ? Math.min((offer.usage / offer.maxUsage) * 100, 100)
+                    : 0
+
+                return (
+                  <tr
+                    key={offer.id}
+                    className="[&>td]:px-4 [&>td]:py-4 bg-[#171717] hover:bg-[#1F1F1F] transition rounded-lg"
+                  >
+                    {/* Offer Name */}
+                    <td className="text-white font-medium w-[220px] ">
+                      <div className="flex items-center gap-3 ">
+                        {offer.image ? (
+                          <img
+                            src={getImage(offer.image)}
+                            alt={offer.name}
+                            className="w-10 h-10 rounded-md object-cover border border-[#262626]"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 rounded-md bg-[#262626]" />
+                        )}
+
+                        <p>{offer.name}</p>
+                      </div>
+                    </td>
+
+                    {/* Code */}
+                    <td>
+                      <div className="flex items-center gap-2">
+                        <span className="bg-[#1F1F1F] px-3 py-1 rounded-md text-blue-400 text-xs">
+                          {offer.code}
+                        </span>
+                        <Copy
+                          size={14}
+                          onClick={() => handleCopy(offer.code)}
+                          className="cursor-pointer text-gray-400 hover:text-white"
+                        />
+                      </div>
+                    </td>
+
+                    {/* Discount */}
+                    <td>{offer.discount}</td>
+
+                    {/* Scope */}
+                    <td>{offer.scope}</td>
+
+                    {/* Validity */}
+                    <td className="text-xs text-gray-400">{offer.validity}</td>
+
+                    {/* Usage */}
+                    <td>
+                      <div className="w-[140px]">
+                        <div className="text-xs mb-1">
+                          {offer.usage.toLocaleString()} /{" "}
+                          {offer.maxUsage !== null
+                            ? offer.maxUsage.toLocaleString()
+                            : "∞"}
+                        </div>
+
+                        <div className="w-full h-1.5 bg-[#262626] rounded-full overflow-hidden">
+                          <div
+                            className="h-1.5 rounded-full bg-blue-500"
+                            style={{ width: `${percentage}%` }}
+                          />
+                        </div>
+                      </div>
+                    </td>
+
+                    {/* Status */}
+                    <td>
+                      <StatusBadge status={offer.status} />
+                    </td>
+
+                    {/* Actions */}
+                    <td className="text-right">
+                      <div className="flex justify-end gap-4">
+                        <Power
+                          className={`w-4 h-4 cursor-pointer ${
+                            !offer.isActive
+                              ? "text-red-400 hover:text-red-300"
+                              : "text-green-400 hover:text-green-300"
+                          }`}
+                          onClick={() => handleStatusToggle(offer.id)}
+                        />
+
+                        <Trash2
+                          size={16}
+                          onClick={() => onDelete?.(offer)}
+                          className="text-red-400 cursor-pointer hover:scale-110 transition"
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                )
+              })
             )}
           </tbody>
         </table>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default AllOffers;
+export default AllOffers

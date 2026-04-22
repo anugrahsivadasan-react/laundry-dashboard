@@ -1,4 +1,4 @@
-import { SquarePen } from "lucide-react"
+import { Power, SquarePen, Trash } from "lucide-react"
 import { useEffect, useState } from "react"
 import AddServiceModal from "./AddServiceModal"
 import { apiAxios } from "../../../config/axios"
@@ -95,8 +95,12 @@ const ServicesTab = () => {
 
       // reload list
       loadService()
-    } catch {
-      toast.error("Error saving service")
+    } catch (err: any) {
+      console.log(err)
+      const errorMessage =
+        err?.response?.data?.message || err?.message || "Error saving service"
+
+      toast.error(errorMessage)
     }
   }
 
@@ -107,6 +111,35 @@ const ServicesTab = () => {
       setIsOpen(true)
     } catch {
       toast.error("Failed to load service")
+    }
+  }
+
+  const handleStatusToggle = async (id: string, status: string) => {
+    try {
+      const res = await apiAxios.patch(`/super_admin/service/status/${id}`, {
+        status,
+      })
+
+      console.log(res.data.message)
+      toast.success(res.data.message)
+      // reload services list after toggle
+      loadService()
+    } catch (error: any) {
+      toast.error(error)
+
+      // console.error(error)
+    }
+  }
+
+  const handleDeleteRow = async (id: string) => {
+    try {
+      await apiAxios.delete(`/super_admin/service/delete/${id}`)
+
+      toast.success("Service group deleted")
+      loadService()
+    } catch (error) {
+      console.error(error)
+      toast.error("Failed to delete service group")
     }
   }
 
@@ -169,11 +202,27 @@ const ServicesTab = () => {
               </span>
 
               {/* Actions */}
-              <span className="flex justify-end">
+              <span className="px-3 flex justify-end gap-3">
                 <SquarePen
                   className="w-5 h-5 text-[#51A2FF]"
                   strokeWidth={2}
                   onClick={() => handleEditClick(service?.id)}
+                />
+
+                <Power
+                  className={`w-4 h-4 ${
+                    service.status === "Inactive"
+                      ? "text-red-400 hover:text-red-300"
+                      : "text-green-400 hover:text-green-300"
+                  }`}
+                  onClick={() => handleStatusToggle(service.id, service.status)}
+                />
+
+                <Trash
+                  className="w-4 h-4 text-[#bf3343]"
+                  onClick={() => {
+                    handleDeleteRow(service.id)
+                  }}
                 />
               </span>
             </div>
