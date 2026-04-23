@@ -7,6 +7,8 @@ export interface DashboardStats {
   totalActiveAdmins: number
   todayBranches: number
   todayAdmins: number
+  pendingAmount: number
+  pendingOrders: number
 }
 
 export interface WeeklyRevenue {

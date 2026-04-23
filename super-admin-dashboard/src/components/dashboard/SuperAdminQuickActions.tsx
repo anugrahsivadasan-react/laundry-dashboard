@@ -8,8 +8,10 @@ import AddBranchModal from "../Branches/AddBranchModal"
 import { createAdmin } from "../../redux/action/adminThunks"
 import CouponModal from "../offers&coupons/CouponModal"
 import { apiAxios } from "../../config/axios"
+import { useNavigate } from "react-router-dom"
 
 const SuperAdminQuickActions: React.FC = () => {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const [adminOpen, setAdminOpen] = useState(false)
   const [branchOpen, setBranchOpen] = useState(false)
@@ -102,7 +104,10 @@ const SuperAdminQuickActions: React.FC = () => {
             Create Offer
           </button>
 
-          <button className=" h-14 rounded-xl text-gray-300 border border-[#2a2a2a] bg-[#1e1e1e] flex items-center justify-center hover:bg-[#232323] transition ">
+          <button
+            onClick={() => navigate("/report-analytics")}
+            className="h-14 rounded-xl text-gray-300 border border-[#2a2a2a] bg-[#1e1e1e] flex items-center justify-center hover:bg-[#232323] transition"
+          >
             View Reports
           </button>
         </div>

@@ -8,27 +8,27 @@ const Cards = () => {
   const statsData = [
     {
       title: "Total Branches",
-      value: stats?.totalBranches,
+      value: stats?.totalBranches ?? 0,
       icon: <Building2 className="w-4 h-4 text-blue-500" />,
-      iconBg: "bg-[#2B7FFF1A]",
+      iconBg: "#2B7FFF1A",
     },
     {
       title: "Active",
-      value: stats?.activeBranches,
+      value: stats?.activeBranches ?? 0,
       icon: <Power className="w-4 h-4 text-green-400" />,
-      iconBg: "bg-green-500/10",
+      iconBg: "#22C55E1A",
     },
     {
       title: "Disabled",
-      value: stats?.inactiveBranches,
+      value: stats?.inactiveBranches ?? 0,
       icon: <Power className="w-4 h-4 text-red-400" />,
-      iconBg: "bg-red-500/10",
+      iconBg: "#EF44441A",
     },
     {
       title: "Total Admins",
-      value: stats?.totalAdmins,
+      value: stats?.totalAdmins ?? 0,
       icon: <Users className="w-4 h-4 text-purple-400" />,
-      iconBg: "bg-purple-500/10",
+      iconBg: "#A855F71A",
     },
   ]
 

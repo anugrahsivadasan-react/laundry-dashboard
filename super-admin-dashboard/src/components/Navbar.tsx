@@ -62,6 +62,20 @@ const Navbar: React.FC = () => {
     }
   }
 
+  const getInitials = (name?: string) => {
+    if (!name) return "U"
+
+    const words = name.trim().split(" ")
+
+    // If multiple words → take first letter of first 2 words
+    if (words.length > 1) {
+      return (words[0][0] + words[1][0]).toUpperCase()
+    }
+
+    // Single word → take first 2 letters
+    return name.substring(0, 2).toUpperCase()
+  }
+
   return (
     <header className="h-[82px] w-full bg-[#000000]  pl-4 md:pl-10 flex items-center justify-between pr-6">
       {/* LEFT */}
@@ -107,22 +121,64 @@ const Navbar: React.FC = () => {
           {/* PROFILE CLICK */}
           <div
             onClick={() => setOpenDropdown((prev) => !prev)}
-            className="flex items-center gap-3 cursor-pointer hover:bg-gray-100 px-2 py-1 rounded"
+            className="flex items-center gap-3 cursor-pointer  px-2 py-1 rounded"
           >
-            <img
-              src="https://i.pravatar.cc/40?img=3"
-              className="w-10 h-10 rounded object-cover"
-              alt="User"
-            />
+            {user?.image ? (
+              <img
+                src={user.image}
+                className="w-10 h-10 rounded object-cover"
+                alt="User"
+              />
+            ) : (
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center text-white"
+                style={{
+                  background:
+                    "linear-gradient(135deg, #2B7FFF 0%, #9810FA 100%)",
+                  fontFamily: "Arimo",
+                  fontWeight: 400,
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                  letterSpacing: "0px",
+                  color: "#FFFFFF",
+                }}
+              >
+                {getInitials(user?.name)}
+              </div>
+            )}
+
             <div className="hidden sm:block">
-              <p className="font-medium text-sm text-[#002F96]">{user?.name}</p>
-              <p className="text-xs text-gray-500">{user?.role}</p>
+              <p
+                style={{
+                  fontFamily: "Arimo",
+                  fontWeight: 400,
+                  fontSize: "14px",
+                  lineHeight: "20px",
+                  letterSpacing: "0px",
+                  color: "#FFFFFF",
+                }}
+              >
+                {user?.name || "User"}
+              </p>
+
+              <p
+                style={{
+                  fontFamily: "Arimo",
+                  fontWeight: 400,
+                  fontSize: "12px",
+                  lineHeight: "16px",
+                  letterSpacing: "0px",
+                  color: "#A1A1A1",
+                }}
+              >
+                {user?.email}
+              </p>
             </div>
           </div>
 
           {/* DROPDOWN */}
           {openDropdown && (
-            <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg border z-50">
+            <div className="absolute right-0 mt-2 w-40 bg-[#262626] rounded-lg shadow-lg border z-50">
               <button
                 onClick={handleLogout}
                 className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 text-red-500"

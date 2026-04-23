@@ -16,6 +16,7 @@ export interface User {
   phone: string
   addresses?: Address[]
   role: string
+  image: string
 }
 
 export interface AuthState {

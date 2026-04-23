@@ -8,6 +8,7 @@ import {
   AlertTriangle,
 } from "lucide-react"
 import { apiAxios } from "../../config/axios"
+import toast from "react-hot-toast"
 
 const BASE_URL = "YOUR_BASE_URL_HERE"
 
@@ -21,10 +22,11 @@ type LoginLog = {
 
 const LoginHistory = () => {
   const [logs, setLogs] = useState<LoginLog[]>([])
+  const [disabled, setDisabled] = useState(false)
 
   const fetchLogs = async () => {
     try {
-      const res = await apiAxios.get(`/super_admin/sessions/all`)
+      const res = await apiAxios.get(`/super_admin/sessions/all/logins`)
       setLogs(res.data.data)
     } catch {
       // fallback demo data
@@ -34,41 +36,86 @@ const LoginHistory = () => {
           timestamp: "2026-01-21 08:30:00",
           ip: "192.168.1.100",
           device: "Chrome on Windows",
-          status: "Success",
+          status: "Login",
         },
         {
           user: "Sarah Johnson",
           timestamp: "2026-01-21 09:15:00",
           ip: "192.168.1.105",
           device: "Safari on MacOS",
-          status: "Success",
+          status: "Login",
         },
         {
           user: "Mike Chen",
           timestamp: "2026-01-20 23:45:00",
           ip: "203.45.67.89",
           device: "Firefox on Linux",
-          status: "Failed",
+          status: "Logout",
         },
       ])
     }
   }
 
   const exportLogs = async () => {
-    const res = await apiAxios.get(`${BASE_URL}/login-history/export`, {
-      responseType: "blob",
-    })
+    const lastDownload = localStorage.getItem("lastExportTime")
+    const now = Date.now()
 
-    const url = window.URL.createObjectURL(new Blob([res.data]))
-    const link = document.createElement("a")
-    link.href = url
-    link.setAttribute("download", "login_history.csv")
-    document.body.appendChild(link)
-    link.click()
+    //  10 minutes = 600000 ms
+    if (lastDownload && now - Number(lastDownload) < 600000) {
+      toast("You can download again after 10 minutes", {
+        icon: "⚠️",
+        style: {
+          border: "1px solid orange",
+          padding: "10px",
+          color: "#f59e0b",
+        },
+      })
+      return
+    }
+
+    try {
+      const res = await apiAxios.get(`/super_admin/sessions/export`, {
+        responseType: "blob",
+      })
+
+      const url = window.URL.createObjectURL(new Blob([res.data]))
+
+      const link = document.createElement("a")
+      link.href = url
+      link.setAttribute("download", "login_history.xlsx")
+
+      document.body.appendChild(link)
+      link.click()
+
+      link.remove()
+      window.URL.revokeObjectURL(url)
+
+      //  Save time AFTER successful download
+      localStorage.setItem("lastExportTime", now.toString())
+    } catch (error) {
+      console.error("Download failed", error)
+    }
   }
 
   useEffect(() => {
     fetchLogs()
+  }, [])
+
+  useEffect(() => {
+    const lastDownload = localStorage.getItem("lastExportTime")
+    if (!lastDownload) return
+
+    const now = Date.now()
+    if (now - Number(lastDownload) < 600000) {
+      setDisabled(true)
+
+      setTimeout(
+        () => {
+          setDisabled(false)
+        },
+        600000 - (now - Number(lastDownload)),
+      )
+    }
   }, [])
 
   return (
@@ -82,10 +129,17 @@ const LoginHistory = () => {
 
         <button
           onClick={exportLogs}
-          className="flex items-center gap-2 text-xs bg-white text-black border border-gray-700 px-3 py-1.5 rounded-md hover:bg-[#242425]"
+          disabled={disabled}
+          className={`flex items-center gap-2 text-xs px-3 py-1.5 rounded-md
+    ${
+      disabled
+        ? "bg-gray-500 cursor-not-allowed"
+        : "bg-white text-black hover:bg-[#242425]"
+    }
+  `}
         >
           <Download className="w-3 h-3" />
-          Export
+          {disabled ? "Wait 10 min" : "Export"}
         </button>
       </div>
 
