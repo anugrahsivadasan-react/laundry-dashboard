@@ -56,7 +56,7 @@ const OffersAndCouponsTabs: React.FC<OffersAndCouponsTabsProps> = ({
       </div>
 
       {/* TABLE / LIST */}
-      <AllOffers filter={activeTab} offers={offers} />
+      <AllOffers   filter={activeTab} offers={offers} />
     </div>
   );
 };

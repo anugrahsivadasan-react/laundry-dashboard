@@ -6,6 +6,8 @@ import { apiAxios } from "../../config/axios"
 import CouponModal from "../../components/offers&coupons/CouponModal"
 import toast from "react-hot-toast"
 import socket from "../../config/soket"
+import AdvertisementModal from "../../components/offers&coupons/AdvertisementModal"
+import AllAdvertisements from "../../components/offers&coupons/AllAdvertisements"
 
 type CouponStatsResponse = {
   totalOffers: number
@@ -19,7 +21,8 @@ const OffersAndCoupons = () => {
   const [activeTab, setActiveTab] = useState<
     "all" | "active" | "expired" | "scheduled"
   >("all")
-  const [open, setOpen] = useState(false)
+  const [openCouponModal, setOpenCouponModal] = useState(false)
+  const [openAdModal, setOpenAdModal] = useState(false)
 
   const [statsLoading, setStatsLoading] = useState(false)
 
@@ -124,6 +127,33 @@ const OffersAndCoupons = () => {
     }
   }
 
+  const handleCreateAdvertisement = async (formData: FormData) => {
+    try {
+      const response = await apiAxios.post(
+        "/super_admin/advertisements/create",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        },
+      )
+
+      toast.success(
+        response.data?.message || "Advertisement created successfully",
+      )
+      return response.data
+    } catch (error: any) {
+      const errorMessage =
+        error?.response?.data?.message ||
+        error?.response?.data?.errors?.[0] ||
+        "Failed to create advertisement"
+
+      toast.error(errorMessage)
+      throw error
+    }
+  }
+
   return (
     <div className="p-6 bg-[#0A0A0A] min-h-screen">
       {/* HEADER */}
@@ -136,13 +166,20 @@ const OffersAndCoupons = () => {
             Create and manage promotional campaigns
           </p>
         </div>
-
-        <button
-          onClick={() => setOpen(true)}
-          className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"
-        >
-          + Add Coupon
-        </button>
+        <div className="flex gap-5">
+          <button
+            onClick={() => setOpenAdModal(true)}
+            className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"
+          >
+            + Add Advertisement
+          </button>
+          <button
+            onClick={() => setOpenCouponModal(true)}
+            className="h-10 px-4 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white text-sm hover:opacity-90"
+          >
+            + Add Coupon
+          </button>
+        </div>
       </div>
 
       <OfferAndCouponsStats stats={statsData} />
@@ -150,13 +187,23 @@ const OffersAndCoupons = () => {
       <section className="mt-8">
         <OffersAndCouponsTabs activeTab={activeTab} onChange={setActiveTab} />
       </section>
+
+      <section className="mt-8">
+        <AllAdvertisements />
+      </section>
+
       <CouponModal
-        isOpen={open}
-        onClose={() => setOpen(false)}
+        isOpen={openCouponModal}
+        onClose={() => setOpenCouponModal(false)}
         onCreate={handleCreateCoupon}
+      />
+      <AdvertisementModal
+        isOpen={openAdModal}
+        onClose={() => setOpenAdModal(false)}
+        onCreate={handleCreateAdvertisement}
       />
     </div>
   )
 }
 
-export default OffersAndCoupons;
+export default OffersAndCoupons

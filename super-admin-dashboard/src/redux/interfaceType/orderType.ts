@@ -7,7 +7,7 @@ export interface OrderStats {
 }
 
 export interface OrderItem {
-  id: number
+  id: string
   orderID: string
   customer: string
   branchName: string

@@ -11,6 +11,7 @@ import {
 import toast from "react-hot-toast"
 import { apiAxios } from "../../../config/axios"
 import { getImage } from "../../../utils/getImage"
+import socket from "../../../config/soket"
 
 type StatusType = "Active" | "Expired" | "Scheduled" | "Inactive"
 
@@ -18,6 +19,7 @@ interface Offer {
   id: string
   name: string
   code: string
+  tag: string
   discount: string
   scope: string
   validity: string
@@ -101,7 +103,21 @@ const AllOffers: React.FC<AllOffersProps> = ({
 
   useEffect(() => {
     fetchCoupons()
-  }, [fetchCoupons, refreshKey])
+  }, [fetchCoupons])
+
+  useEffect(() => {
+    if (!socket) return
+
+    const handleCouponChange = () => {
+      fetchCoupons()
+    }
+
+    socket.on("coupon-changed", handleCouponChange)
+
+    return () => {
+      socket.off("coupon-changed", handleCouponChange)
+    }
+  }, [socket, fetchCoupons])
 
   const handleStatusToggle = async (id: string) => {
     try {
@@ -112,10 +128,38 @@ const AllOffers: React.FC<AllOffersProps> = ({
       toast.success(
         `coupon is ${res.data?.isActive ? "activated" : "deactivated"}`,
       )
-      fetchCoupons()
+      // fetchCoupons()
     } catch (error) {
       console.error(error)
       toast.error("Failed to update status")
+    }
+  }
+
+  // ================= DELETE COUPON =================
+  const handleDeleteCoupon = async (id: string) => {
+    try {
+      await apiAxios.delete(`/super_admin/coupons/delete/${id}`)
+
+      toast.success(`Coupon deleted successfully"`)
+      // fetchCoupons()
+    } catch (error) {
+      console.error(error)
+      toast.error("Failed to delete coupon")
+    }
+  }
+
+  //================= UPDATE TAG =================
+  const handleTagUpdate = async (id: string, tag: string) => {
+    try {
+      await apiAxios.patch(`/super_admin/coupons/update-tag/${id}`, { tag })
+
+      toast.success("Tag updated successfully")
+
+      // optional (socket already handles)
+      // fetchCoupons()
+    } catch (error) {
+      console.error(error)
+      toast.error("Failed to update tag")
     }
   }
 
@@ -139,18 +183,19 @@ const AllOffers: React.FC<AllOffersProps> = ({
   }
 
   return (
-    <div className="w-full bg-[#171717] border border-[#262626] rounded-[14px] px-[24px] py-[24px]">
+    <div className="w-full bg-[#171717] border border-[#262626] rounded-[14px] px-[24px] py-[24px] select-none">
       <h2 className="text-white text-lg font-semibold mb-6">
         All Promotional Offers
       </h2>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left text-gray-300 min-w-[1100px] border-separate border-spacing-y-2">
+      <div className="max-h-[500px] overflow-y-auto overflow-x-auto custom-scrollbar">
+        <table className="w-full text-sm text-left text-gray-300 min-w-[1100px]  border-separate border-spacing-y-2">
           {/* HEADER */}
           <thead className="text-xs text-gray-400">
             <tr className="[&>th]:px-4 [&>th]:py-3 ">
               <th className="w-[220px]">Offer Name</th>
               <th>Code</th>
+              <th>Tag</th>
               <th>Discount</th>
               <th>Scope</th>
               <th>Validity</th>
@@ -189,8 +234,8 @@ const AllOffers: React.FC<AllOffersProps> = ({
                     className="[&>td]:px-4 [&>td]:py-4 bg-[#171717] hover:bg-[#1F1F1F] transition rounded-lg"
                   >
                     {/* Offer Name */}
-                    <td className="text-white font-medium w-[220px] ">
-                      <div className="flex items-center gap-3 ">
+                    <td className="text-white font-medium ">
+                      <div className="flex items-center gap-3  w-[180px]">
                         {offer.image ? (
                           <img
                             src={getImage(offer.image)}
@@ -219,6 +264,23 @@ const AllOffers: React.FC<AllOffersProps> = ({
                       </div>
                     </td>
 
+                    {/* Tag */}
+                    <td>
+                      <select
+                        value={offer.tag}
+                        disabled={offer.status !== "Active"}
+                        onChange={(e) =>
+                          handleTagUpdate(offer.id, e.target.value)
+                        }
+                        className="bg-[#1F1F1F] text-gray-300 text-xs px-2 py-1 rounded border border-[#262626] focus:outline-none"
+                      >
+                        <option value="FEATURED">FEATURED</option>
+                        <option value="SPECIAL">SPECIAL</option>
+                        <option value="TRENDING">TRENDING</option>
+                        <option value="NEW">NEW</option>
+                      </select>
+                    </td>
+
                     {/* Discount */}
                     <td>{offer.discount}</td>
 
@@ -226,7 +288,11 @@ const AllOffers: React.FC<AllOffersProps> = ({
                     <td>{offer.scope}</td>
 
                     {/* Validity */}
-                    <td className="text-xs text-gray-400">{offer.validity}</td>
+                    <td>
+                      <div className="text-xs text-gray-400 w-[140px] ">
+                        {offer.validity}
+                      </div>
+                    </td>
 
                     {/* Usage */}
                     <td>
@@ -266,7 +332,7 @@ const AllOffers: React.FC<AllOffersProps> = ({
 
                         <Trash2
                           size={16}
-                          onClick={() => onDelete?.(offer)}
+                          onClick={() => handleDeleteCoupon(offer.id)}
                           className="text-red-400 cursor-pointer hover:scale-110 transition"
                         />
                       </div>

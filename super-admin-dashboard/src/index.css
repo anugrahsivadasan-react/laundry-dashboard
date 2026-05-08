@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&display=swap");
 
 @tailwind base;
@@ -11,34 +11,27 @@
   }
 }
 
-
 .no-scrollbar {
-  -ms-overflow-style: none;     /* IE + Edge */
-  scrollbar-width: none;        /* Firefox */
+  -ms-overflow-style: none; /* IE + Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 .no-scrollbar::-webkit-scrollbar {
-  display: none;                /* Chrome, Safari */
+  display: none; /* Chrome, Safari */
 }
 
-
 .filter-blue {
-  filter: brightness(0) saturate(100%)
-          invert(18%)
-          sepia(96%)
-          saturate(3200%)
-          hue-rotate(205deg)
-          brightness(92%)
-          contrast(110%);
+  filter: brightness(0) saturate(100%) invert(18%) sepia(96%) saturate(3200%)
+    hue-rotate(205deg) brightness(92%) contrast(110%);
 }
 
 /* Dark Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
+  height: 6px;
 }
-
 ::-webkit-scrollbar-track {
-  background: #0A0A0A; /* Same as dashboard bg */
+  background: #0a0a0a; /* Same as dashboard bg */
 }
 
 ::-webkit-scrollbar-thumb {
@@ -47,6 +40,5 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2A2A2A;
+  background: #2a2a2a;
 }
-

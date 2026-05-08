@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { Search, Eye } from "lucide-react"
 import { useAppSelector } from "../../redux/hooks"
+import OrderDetailsModal from "./OrderDetailsModal"
 
 /* ================= TYPES ================= */
 
@@ -69,6 +70,8 @@ const OrdersPage: React.FC = () => {
   const [search, setSearch] = useState("")
   const [selectBranch, setSelectBranch] = useState("")
   const [selectStatus, setSelectStatus] = useState("")
+  const [selectedOrderId, setSelectedOrderId] = useState<string>("")
+  const [open, setOpen] = useState(false)
 
   const filterBranch = [
     ...new Set(
@@ -77,7 +80,6 @@ const OrdersPage: React.FC = () => {
         .filter((b) => b && b.toLowerCase() !== "n/a"),
     ),
   ]
-
   const filteredOrders = orders.filter((o) => {
     const searchText = search.toLowerCase()
 
@@ -200,7 +202,13 @@ const OrdersPage: React.FC = () => {
 
                     {/* ACTION */}
                     <td className="px-4 py-3 text-center">
-                      <button className="text-blue-400 hover:text-blue-300">
+                      <button
+                        className="text-blue-400 hover:text-blue-300"
+                        onClick={() => {
+                          setSelectedOrderId(order?.id)
+                          setOpen(true)
+                        }}
+                      >
                         <Eye className="w-4 h-4" />
                       </button>
                     </td>
@@ -218,6 +226,11 @@ const OrdersPage: React.FC = () => {
           )}
         </div>
       </div>
+      <OrderDetailsModal
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        orderId={selectedOrderId}
+      />
     </div>
   )
 }

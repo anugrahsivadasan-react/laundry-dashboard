@@ -18,6 +18,7 @@ export type CouponForm = {
   branchId: string
   isActive: boolean
   image: File | null
+  tag: "" | "FEATURED" | "SPECIAL" | "TRENDING" | "NEW"
 }
 
 type Props = {
@@ -44,6 +45,7 @@ const CouponModal: React.FC<Props> = ({ isOpen, onClose, onCreate }) => {
     branchId: "",
     isActive: true,
     image: null,
+    tag: "",
   })
 
   const [inputErrors, setInputErrors] = useState<
@@ -181,6 +183,7 @@ const CouponModal: React.FC<Props> = ({ isOpen, onClose, onCreate }) => {
 
     if (!form.name.trim()) errors.name = "Coupon name required"
     if (!form.code.trim()) errors.code = "Coupon code required"
+    if (!form.tag) errors.tag = "Coupon tag required"
 
     if (!["PERCENTAGE", "FLAT"].includes(form.discountType)) {
       errors.discountType = "Invalid discount type"
@@ -255,6 +258,7 @@ const CouponModal: React.FC<Props> = ({ isOpen, onClose, onCreate }) => {
       formData.append("validFrom", form.validFrom)
       formData.append("validTo", form.validTo)
       formData.append("applyTo", form.applyTo)
+      formData.append("tag", form.tag)
       formData.append(
         "branchId",
         form.applyTo === "BRANCH" ? form.branchId : "",
@@ -291,6 +295,7 @@ const CouponModal: React.FC<Props> = ({ isOpen, onClose, onCreate }) => {
       branchId: "",
       isActive: true,
       image: null,
+      tag: "",
     })
 
     setPreview("")
@@ -322,7 +327,7 @@ const CouponModal: React.FC<Props> = ({ isOpen, onClose, onCreate }) => {
               onChange={(v) => handleChange("name", v)}
               error={inputErrors.name}
             />
-
+ 
             <div>
               <label className="text-gray-400 text-xs mb-1 block">
                 Coupon Code
@@ -351,6 +356,20 @@ const CouponModal: React.FC<Props> = ({ isOpen, onClose, onCreate }) => {
               )}
             </div>
           </div>
+
+          {/* TAG SELECT */}
+          <Select
+            label="Coupon Tag"
+            value={form.tag}
+            onChange={(v) => handleChange("tag", v)}
+            options={[
+              { id: "FEATURED", name: "Featured" },
+              { id: "SPECIAL", name: "Special" },
+              { id: "TRENDING", name: "Trending" },
+              { id: "NEW", name: "New" },
+            ]}
+            error={inputErrors.tag}
+          />
 
           {/* DISCOUNT */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
