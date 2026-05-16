@@ -8,7 +8,14 @@ interface FAQItem {
   answer: string
 }
 
+type RoleType = "USER" | "ADMIN" | "SUPERADMIN" | "DELIVERY"
+
+const roles: RoleType[] = ["USER", "ADMIN", "SUPERADMIN", "DELIVERY"]
+
 const CSMpages: React.FC = () => {
+  // ROLE
+  const [selectedRole, setSelectedRole] = useState<RoleType>("USER")
+
   const [aboutTitle, setAboutTitle] = useState("")
   const [aboutContent, setAboutContent] = useState("")
 
@@ -28,7 +35,7 @@ const CSMpages: React.FC = () => {
     faq: false,
   })
 
-  //  store last saved state
+  // store last saved state
   const lastSavedRef = useRef({
     about: { title: "", content: "" },
     terms: { title: "", content: "" },
@@ -36,64 +43,93 @@ const CSMpages: React.FC = () => {
     faq: { title: "", faq: [] as FAQItem[] },
   })
 
-  //  helper
+  // helper
   const isSameFAQ = (a: FAQItem[], b: FAQItem[]) =>
     JSON.stringify(a) === JSON.stringify(b)
 
-  //  load all pages
+  // LOAD ALL DATA BASED ON ROLE
   useEffect(() => {
     const loadAllPages = async () => {
-      try {
-        const [aboutRes, termsRes, privacyRes, faqRes] = await Promise.all([
-          apiAxios.get(`super_admin/setting/page/ABOUT`),
-          apiAxios.get(`super_admin/setting/page/TERMS`),
-          apiAxios.get(`super_admin/setting/page/PRIVACY`),
-          apiAxios.get(`super_admin/setting/page/FAQ`),
-        ])
+      const results = await Promise.allSettled([
+        apiAxios.get(`super_admin/setting/page/ABOUT/${selectedRole}`),
 
-        const about = aboutRes.data.data
-        const terms = termsRes.data.data
-        const privacy = privacyRes.data.data
-        const faq = faqRes.data.data
+        apiAxios.get(`super_admin/setting/page/TERMS/${selectedRole}`),
+
+        apiAxios.get(`super_admin/setting/page/PRIVACY/${selectedRole}`),
+
+        apiAxios.get(`super_admin/setting/page/FAQ/${selectedRole}`),
+      ])
+
+      // ABOUT
+      if (results[0].status === "fulfilled") {
+        const about = results[0].value.data.data
 
         setAboutTitle(about?.title || "")
         setAboutContent(about?.content || "")
 
+        lastSavedRef.current.about = {
+          title: about?.title || "",
+          content: about?.content || "",
+        }
+      } else {
+        setAboutTitle("")
+        setAboutContent("")
+      }
+
+      // TERMS
+      if (results[1].status === "fulfilled") {
+        const terms = results[1].value.data.data
+
         setTermsTitle(terms?.title || "")
         setTermsContent(terms?.content || "")
 
+        lastSavedRef.current.terms = {
+          title: terms?.title || "",
+          content: terms?.content || "",
+        }
+      } else {
+        setTermsTitle("")
+        setTermsContent("")
+      }
+
+      // PRIVACY
+      if (results[2].status === "fulfilled") {
+        const privacy = results[2].value.data.data
+
         setPrivacyTitle(privacy?.title || "")
+
         setPrivacyContent(privacy?.content || "")
 
+        lastSavedRef.current.privacy = {
+          title: privacy?.title || "",
+          content: privacy?.content || "",
+        }
+      } else {
+        setPrivacyTitle("")
+        setPrivacyContent("")
+      }
+
+      // FAQ
+      if (results[3].status === "fulfilled") {
+        const faq = results[3].value.data.data
+
         setFaqTitle(faq?.title || "")
+
         setFaqs(faq?.faq || [])
 
-        //  set last saved
-        lastSavedRef.current = {
-          about: {
-            title: about?.title || "",
-            content: about?.content || "",
-          },
-          terms: {
-            title: terms?.title || "",
-            content: terms?.content || "",
-          },
-          privacy: {
-            title: privacy?.title || "",
-            content: privacy?.content || "",
-          },
-          faq: {
-            title: faq?.title || "",
-            faq: (faq?.faq || []).map((f) => ({ ...f })),
-          },
+        lastSavedRef.current.faq = {
+          title: faq?.title || "",
+
+          faq: (faq?.faq || []).map((f: FAQItem) => ({ ...f })),
         }
-      } catch {
-        toast.error("Failed to load pages")
+      } else {
+        setFaqTitle("")
+        setFaqs([])
       }
     }
 
     loadAllPages()
-  }, [])
+  }, [selectedRole])
 
   const addFAQ = () => {
     setFaqs([...faqs.map((f) => ({ ...f })), { question: "", answer: "" }])
@@ -101,13 +137,12 @@ const CSMpages: React.FC = () => {
 
   const updateFAQ = (index: number, field: string, value: string) => {
     const updated = faqs.map((f, i) =>
-      i === index
-        ? { ...f, [field]: value } // ✅ new object
-        : f,
+      i === index ? { ...f, [field]: value } : f,
     )
 
     setFaqs(updated)
   }
+
   const removeFAQ = (index: number) => {
     setFaqs(faqs.filter((_, i) => i !== index))
   }
@@ -122,8 +157,13 @@ const CSMpages: React.FC = () => {
     }
 
     try {
+      setLoading((prev) => ({
+        ...prev,
+        about: true,
+      }))
       const res = await apiAxios.post(`super_admin/setting/page`, {
         type: "ABOUT",
+        role: selectedRole,
         title: aboutTitle,
         content: aboutContent,
       })
@@ -138,6 +178,11 @@ const CSMpages: React.FC = () => {
       toast.success(res.data.message)
     } catch {
       toast.error("Failed to save About")
+    } finally {
+      setLoading((prev) => ({
+        ...prev,
+        about: false,
+      }))
     }
   }
 
@@ -149,8 +194,13 @@ const CSMpages: React.FC = () => {
     }
 
     try {
+      setLoading((prev) => ({
+        ...prev,
+        terms: true,
+      }))
       const res = await apiAxios.post(`super_admin/setting/page`, {
         type: "TERMS",
+        role: selectedRole,
         title: termsTitle,
         content: termsContent,
       })
@@ -165,6 +215,11 @@ const CSMpages: React.FC = () => {
       toast.success(res.data.message)
     } catch {
       toast.error("Failed to save Terms")
+    } finally {
+      setLoading((prev) => ({
+        ...prev,
+        terms: false,
+      }))
     }
   }
 
@@ -176,8 +231,14 @@ const CSMpages: React.FC = () => {
     }
 
     try {
+      setLoading((prev) => ({
+        ...prev,
+        privacy: true,
+      }))
+
       const res = await apiAxios.post(`super_admin/setting/page`, {
         type: "PRIVACY",
+        role: selectedRole,
         title: privacyTitle,
         content: privacyContent,
       })
@@ -192,25 +253,40 @@ const CSMpages: React.FC = () => {
       toast.success(res.data.message)
     } catch {
       toast.error("Failed to save Privacy")
+    } finally {
+      setLoading((prev) => ({
+        ...prev,
+        privacy: false,
+      }))
     }
   }
 
   const saveFAQ = async () => {
     const prev = lastSavedRef.current.faq
 
-    if (!faqs.length) return toast.error("Add at least one FAQ")
+    if (!faqs.length) {
+      return toast.error("Add at least one FAQ")
+    }
 
     const hasEmpty = faqs.some((f) => !f.question.trim() || !f.answer.trim())
 
-    if (hasEmpty) return toast.error("Fill all FAQ fields")
+    if (hasEmpty) {
+      return toast.error("Fill all FAQ fields")
+    }
 
     if (prev.title === faqTitle && isSameFAQ(prev.faq, faqs)) {
       return toast("No changes to save")
     }
 
     try {
+      setLoading((prev) => ({
+        ...prev,
+        faq: true,
+      }))
+
       const res = await apiAxios.post(`super_admin/setting/page`, {
         type: "FAQ",
+        role: selectedRole,
         title: faqTitle,
         faq: faqs,
       })
@@ -219,7 +295,8 @@ const CSMpages: React.FC = () => {
 
       lastSavedRef.current.faq = {
         title: data.title,
-        faq: (data.faq || []).map((f: any) => ({ ...f })),
+
+        faq: (data.faq || []).map((f: FAQItem) => ({ ...f })),
       }
 
       setFaqTitle(data.title)
@@ -228,11 +305,39 @@ const CSMpages: React.FC = () => {
       toast.success(res.data.message)
     } catch {
       toast.error("Failed to save FAQ")
+    } finally {
+      setLoading((prev) => ({
+        ...prev,
+        faq: false,
+      }))
     }
   }
-
   return (
     <div className="min-h-screen bg-[#0b0b0c] text-white p-8">
+      {/* ROLE SELECTOR */}
+
+      <div className="mb-6">
+        <label className="text-sm text-gray-400 block mb-2">Select Role</label>
+
+        <select
+          value={selectedRole}
+          onChange={(e) => setSelectedRole(e.target.value as RoleType)}
+          className="
+            bg-[#1a1b1e]
+            border
+            border-[#2a2a2a]
+            rounded
+            p-2
+            w-[250px]
+          "
+        >
+          {roles.map((role) => (
+            <option key={role} value={role}>
+              {role}
+            </option>
+          ))}
+        </select>
+      </div>
       <div className="grid grid-cols-2 gap-6">
         {/* ABOUT */}
         <div className="bg-[#111214] p-6 rounded-xl border border-[#1f1f1f]">
@@ -257,10 +362,18 @@ const CSMpages: React.FC = () => {
           />
 
           <button
+            disabled={loading.about}
             onClick={saveAbout}
-            className="flex justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 p-2 rounded text-sm"
+            className=" flex justify-center items-center gap-3 w-full bg-blue-600 hover:bg-blue-700 p-2 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Save /> Save Changes
+            {loading.about ? (
+              "Saving..."
+            ) : (
+              <>
+                <Save />
+                Save Changes
+              </>
+            )}
           </button>
         </div>
 
@@ -317,10 +430,18 @@ const CSMpages: React.FC = () => {
           </button>
 
           <button
+            disabled={loading.faq}
             onClick={saveFAQ}
-            className="flex justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 p-2 rounded text-sm"
+            className=" flex justify-center items-center gap-3 w-full bg-blue-600 hover:bg-blue-700 p-2 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Save /> Save Changes
+            {loading.faq ? (
+              "Saving..."
+            ) : (
+              <>
+                <Save />
+                Save Changes
+              </>
+            )}
           </button>
         </div>
 
@@ -344,10 +465,18 @@ const CSMpages: React.FC = () => {
           />
 
           <button
+            disabled={loading.terms}
             onClick={saveTerms}
-            className="flex justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 p-2 rounded text-sm"
+            className=" flex justify-center items-center gap-3 w-full bg-blue-600 hover:bg-blue-700 p-2 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Save /> Save Changes
+            {loading.terms ? (
+              "Saving..."
+            ) : (
+              <>
+                <Save />
+                Save Changes
+              </>
+            )}
           </button>
         </div>
 
@@ -371,10 +500,18 @@ const CSMpages: React.FC = () => {
           />
 
           <button
+            disabled={loading.privacy}
             onClick={savePrivacy}
-            className="flex justify-center gap-3 w-full bg-blue-600 hover:bg-blue-700 p-2 rounded text-sm"
+            className=" flex justify-center items-center gap-3 w-full bg-blue-600 hover:bg-blue-700 p-2 rounded text-sm disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Save /> Save Changes
+            {loading.privacy ? (
+              "Saving..."
+            ) : (
+              <>
+                <Save />
+                Save Changes
+              </>
+            )}
           </button>
         </div>
       </div>

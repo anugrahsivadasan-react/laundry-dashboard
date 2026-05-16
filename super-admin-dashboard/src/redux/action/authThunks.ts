@@ -15,6 +15,7 @@ export const loginUser = createAsyncThunk(
         password,
       })
       localStorage.setItem("token", res.data.token)
+      localStorage.setItem("refreshToken", res.data.refreshToken)
       await dispatch(getProfile())
       return res.data
     } catch (err: any) {

@@ -5,6 +5,7 @@ export const apiAxios = axios.create({
   withCredentials: true,
 })
 
+// REQUEST INTERCEPTOR
 apiAxios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token")
@@ -18,25 +19,49 @@ apiAxios.interceptors.request.use(
   (error) => Promise.reject(error),
 )
 
+// RESPONSE INTERCEPTOR
 apiAxios.interceptors.response.use(
   (response) => response,
+
   async (error) => {
     const originalRequest = error.config
-    const loggedOut = localStorage.getItem("loggedOut")
+
+    // avoid infinite loop
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true
-      if (!loggedOut) {
-        try {
-          await axios.post(
-            `${import.meta.env.VITE_API_URL}/auth/refresh-token`,
-            {},
-            { withCredentials: true },
-          )
 
-          return apiAxios(originalRequest)
-        } catch {
-          window.location.href = "/login"
-        }
+      try {
+        const refreshToken = localStorage.getItem("refreshToken")
+
+        // REFRESH TOKEN API
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/super_admin/auth/refresh-token`,
+          {
+            refreshToken,
+          },
+          {
+            withCredentials: true,
+          },
+        )
+
+        const newAccessToken = response.data.token
+
+        // SAVE NEW ACCESS TOKEN
+        localStorage.setItem("token", newAccessToken)
+
+        // UPDATE HEADER
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
+
+        // RETRY ORIGINAL REQUEST
+        return apiAxios(originalRequest)
+      } catch (refreshError) {
+        // TOKEN EXPIRED / INVALID
+        localStorage.removeItem("token")
+        localStorage.removeItem("refreshToken")
+
+        window.location.href = "/login"
+
+        return Promise.reject(refreshError)
       }
     }
 

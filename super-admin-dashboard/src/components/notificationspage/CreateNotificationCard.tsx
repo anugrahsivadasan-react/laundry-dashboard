@@ -27,6 +27,7 @@ const priorityOptions = [
 const roleDropdownOptions = [
   { label: "USER", value: "USER" },
   { label: "DRIVER", value: "DRIVER" },
+  { label: "DELIVERY", value: "DELIVERY" },
   { label: "ADMIN", value: "ADMIN" },
   { label: "SUPERADMIN", value: "SUPERADMIN" },
 ]
