@@ -96,12 +96,14 @@ export default function LoginPage() {
   const onSubmit: SubmitHandler<LoginFormInputs> = async (data) => {
     console.log("Form Data:", data)
     try {
+      console.log("object")
       const responseAction = await dispatch(
         loginUser({
           email: data.email,
           password: data.password,
         }),
       ).unwrap()
+      console.log("object")
       toast.success("login successfull")
       navigate("/dashboard")
     } catch (err) {
